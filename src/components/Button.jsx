@@ -17,8 +17,7 @@ const Wrapper = styled.button`
     padding: 20px 0;
     border-radius: 10px;
     border: none;
-    font-weight: bold;
-    font-size: 16px;
+    font-size: 15px;
 `
 
 export default Button

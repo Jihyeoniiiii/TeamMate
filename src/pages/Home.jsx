@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import Modal from "../components/Modal"
 import { useState } from "react";
 import { resetAuth } from "../store/authSlice";
+import NavigationBar from "../components/NavigationBar";
 
 const Home = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,7 +20,7 @@ const Home = () => {
 
   return (
     <>
-        <button onClick={openModal}>로그인열기</button>
+        <NavigationBar onClick={openModal}/>
         {isModalOpen && (
             <Modal type={type} setType={setType} onClose={closeModal} />
         )}
