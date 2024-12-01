@@ -1,8 +1,8 @@
 import styled from "styled-components"
 
-const Button = ({ text }) => {
+const Button = ({ text, onClick }) => {
   return (
-    <Wrapper>{text}</Wrapper>
+    <Wrapper onClick={onClick}>{text}</Wrapper>
   )
 }
 
