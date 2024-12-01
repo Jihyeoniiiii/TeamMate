@@ -42,8 +42,7 @@ const ModalContainer = styled.div`
   flex-direction: column;
   background-color: white;
   width: 370px;
-  height: 380px;
-  padding: 0px 30px;
+  padding: 45px 30px;
   z-index: 10;
   border-radius: 10px;
 `;
