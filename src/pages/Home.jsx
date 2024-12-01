@@ -8,7 +8,10 @@ const Home = () => {
     const [type, setType] = useState("login");
     const dispatch = useDispatch();
 
-    const openModal = () => setIsModalOpen(true);
+    const openModal = () => {
+      setIsModalOpen(true);
+      setType("login");
+    }
     const closeModal = () => {
       setIsModalOpen(false);
       dispatch(resetAuth());
