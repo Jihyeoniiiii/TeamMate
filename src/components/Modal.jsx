@@ -2,8 +2,12 @@ import styled from "styled-components";
 import Login from "./Login";
 import SignUp from "./SignUp";
 import CloseIcon from "../assets/icon/Close.svg";
+import { useDispatch } from "react-redux";
+import { resetAuth } from "../store/authSlice";
 
 const Modal = ({ type, setType, onClose }) => {
+  const dispatch = useDispatch();
+
   return (
     <ModalOverlay>
       <ModalContainer>
@@ -13,7 +17,10 @@ const Modal = ({ type, setType, onClose }) => {
         <TopSection>TEAMMATE</TopSection>
         {type === "login" ? <Login /> : <SignUp />}
         <SwitchTypeButton
-          onClick={() => setType(type === "login" ? "signup" : "login")}
+          onClick={() => {
+            setType(type === "login" ? "signup" : "login")
+            dispatch(resetAuth());
+          }}
         >
           {type === "login" ? "회원가입" : "로그인"}
         </SwitchTypeButton>
