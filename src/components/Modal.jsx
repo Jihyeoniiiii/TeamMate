@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Login from "./Login";
 import SignUp from "./SignUp";
 import CloseIcon from "../assets/icon/Close.svg";
+import mainLogo from "../assets/images/main-logo.png"
 import { useDispatch } from "react-redux";
 import { resetAuth } from "../store/authSlice";
 
@@ -14,7 +15,7 @@ const Modal = ({ type, setType, onClose }) => {
         <CloseButton onClick={onClose}>
           <img src={CloseIcon} alt="Close" width={15} height={15} />
         </CloseButton>
-        <TopSection>TEAMMATE</TopSection>
+        <TopSection><img src={mainLogo} width={180} height={100}/></TopSection>
         {type === "login" ? <Login /> : <SignUp />}
         <SwitchTypeButton
           onClick={() => {
@@ -49,7 +50,7 @@ const ModalContainer = styled.div`
   flex-direction: column;
   background-color: white;
   width: 370px;
-  padding: 45px 30px;
+  padding: 30px;
   z-index: 10;
   border-radius: 10px;
 `;
