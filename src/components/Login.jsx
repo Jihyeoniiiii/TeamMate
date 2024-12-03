@@ -41,7 +41,7 @@ const Input = styled.input`
 `;
 
 const ButtonWrapper = styled.div`
-  margin-top: 30px;
+  margin: 10px 0;
   width: 100%;
 `;
 
