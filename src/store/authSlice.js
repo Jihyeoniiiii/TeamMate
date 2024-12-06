@@ -7,28 +7,25 @@ const authSlice = createSlice({
         nickname: '',
         email: '',
         password: '',
+        confirmPassword: '',
     },
     reducers: {
-        setSchool: (state, action) => {
+        setAuthData: (state, action) => {
             state.school = action.payload;
-        },
-        setNickname: (state, action) => {
             state.nickname = action.payload;
-        },
-        setEmail: (state, action) => {
             state.email = action.payload;
-        },
-        setPassword: (state, action) => {
             state.password = action.payload;
+            state.confirmPassword = action.payload;
         },
         resetAuth: (state) => {
             state.school = '';
             state.nickname = '';
             state.email = '';
             state.password = '';
+            state.confirmPassword = '';
         },
     },
 })
 
-export const { setSchool, setNickname, setEmail, setPassword, resetAuth } = authSlice.actions;
+export const { setAuthData, resetAuth } = authSlice.actions;
 export default authSlice.reducer;

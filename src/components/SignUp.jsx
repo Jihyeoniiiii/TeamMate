@@ -2,41 +2,58 @@ import styled from "styled-components";
 import Button from "./Button";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setEmail, setPassword, setSchool, setNickname } from "../store/authSlice";
+import { setAuthData } from "../store/authSlice"
+import axios from "axios";
+import { handleApiError } from "../utils/handleApiError";
 
 const SignUp = () => {
-  const { email, password, school, nickname } = useSelector((state) => state.auth);
+  const { email, password, confirmPassword, school, nickname } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [isInputVisible, setIsInputVisible] = useState(false);
+  const [code, setCode] = useState();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+    school: "",
+    nickname: "",
+  })
 
-  const handleSchoolChange = (e) => {
-    dispatch(setSchool(e.target.value));
-  };
-
-  const handleNicknameChange = (e) => {
-    dispatch(setNickname(e.target.value));
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({...prev, [name]: value}));
   }
 
-  const handleIdChange = (e) => {
-    dispatch(setEmail(e.target.value));
-  };
+  const handleVerification = async () => {
+    const{ email, school } = formData;
 
-  const handlePasswordChange = (e) => {
-    dispatch(setPassword(e.target.value));
-  };
-
-  const handleConfirmPassword = (e) => {
-    setConfirmPassword(e.target.value);
-  };
-
-  const handleVerification = () => {
-    if (!email || !school) {
-      alert("모든 입력값을 채워주세요!");
+    if(!email || !school){
+      alert("모두 입력해주세요!")
       return;
-    } else {
-      setIsInputVisible(true);
     }
+
+    try {
+      const response = await axios.post("/auth/student/verify", {
+        email,
+        school
+      })
+
+      const data = await response.json();
+
+      if(response.ok){
+        setIsInputVisible(true);
+      } else {
+        handleApiError(response.status, data.code);
+      }
+
+      console.log(email+" "+school);
+    } catch (error) {
+      console.error("네트워크 오류:", error);
+    }
+  }
+
+  const handleConfirmCode = () => {
+    setCode(code);
   }
 
   const handleSubmit = () => {
@@ -50,6 +67,7 @@ const SignUp = () => {
       return;
     }
 
+    dispatch(setAuthData({ email, password, school, nickname }));
     console.log(email, password, school, nickname); // 입력값을 백엔드로 전송
   };
 
@@ -57,14 +75,16 @@ const SignUp = () => {
     <>
       <Input
         type="email"
-        value={email}
-        onChange={handleIdChange}
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
         placeholder="학교 이메일"
       />
       <Input
         type="text"
-        value={school}
-        onChange={handleSchoolChange}
+        name="school"
+        value={formData.school}
+        onChange={handleChange}
         placeholder="학교명"
       />
       <ButtonWrapper>
@@ -74,34 +94,40 @@ const SignUp = () => {
         <VerificationWrapper>
             <VerificationInput
               type="text"
+              value={code}
+              onChange={handleChange}
               placeholder="인증코드"
             />
             <ButtonWrapper>
-              <Button text="확인"></Button>
+              <Button text="확인" onClick={handleConfirmCode}></Button>
             </ButtonWrapper>
         </VerificationWrapper>
       }
       <Input
         type="text"
-        value={nickname}
-        onChange={handleNicknameChange}
+        name="nickname"
+        value={formData.nickname}
+        onChange={handleChange}
         placeholder="닉네임"
       />
       <Input
         type="email"
-        value={email}
+        name="email"
+        value={formData.email}
         placeholder="아이디"
         readOnly
       />
       <Input
         type="password"
-        value={password}
-        onChange={handlePasswordChange}
+        name="password"
+        value={formData.password}
+        onChange={handleChange}
         placeholder="비밀번호"
       />
       <Input
         type="password"
-        onChange={handleConfirmPassword}
+        name="cofirmPassword"
+        onChange={formData.handleChange}
         placeholder="비밀번호 확인"
       />
       <ButtonWrapper>
