@@ -38,7 +38,7 @@ const SignUp = () => {
         school
       })
 
-      const data = await response.json();
+      const data = await response.data;
 
       if(response.ok){
         setIsInputVisible(true);
@@ -52,8 +52,32 @@ const SignUp = () => {
     }
   }
 
-  const handleConfirmCode = () => {
-    setCode(code);
+  const handleCodeChange = (e) => {
+    setCode(e.target.value);
+  }
+
+  const handleConfirmCode = async () => {
+    const{ email, school } = formData;
+
+    try {
+      const response = await axios.post("/auth/student/confirm", {
+        email,
+        school,
+        code
+      })
+
+      const data = await response.data;
+
+      if(response.ok){
+        console.log("인증 완료되었습니다.")
+      } else {
+        handleApiError(response.status, data.code);
+      }
+
+      console.log(email+" "+school);
+    } catch (error) {
+      console.error("네트워크 오류:", error);
+    }
   }
 
   const handleSubmit = () => {
@@ -95,7 +119,7 @@ const SignUp = () => {
             <VerificationInput
               type="text"
               value={code}
-              onChange={handleChange}
+              onChange={handleCodeChange}
               placeholder="인증코드"
             />
             <ButtonWrapper>
