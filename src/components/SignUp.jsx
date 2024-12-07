@@ -3,8 +3,8 @@ import Button from "./Button";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setAuthData } from "../store/authSlice"
-import axios from "axios";
 import { handleApiError } from "../utils/handleApiError";
+import { confirmCode, submitSignup, verifyStudent } from "../api/auth";
 
 const SignUp = ({ setType }) => {
   const dispatch = useDispatch();
@@ -17,6 +17,16 @@ const SignUp = ({ setType }) => {
     school: "",
     nickname: "",
   })
+
+  const processError = (error) => {
+    if (error.status && error.code) {
+      const errorMessage = handleApiError(error.status, error.code);
+      alert(errorMessage);
+    } else {
+      console.error("네트워크 오류:", error);
+      alert("네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,25 +41,12 @@ const SignUp = ({ setType }) => {
       return;
     }
 
-    setIsInputVisible(true)
-
     try {
-      const response = await axios.post("/auth/student/verify", {
-        email,
-        school
-      })
-
-      const data = await response.data;
-
-      if(response.ok){
-        setIsInputVisible(true);
-      } else {
-        handleApiError(response.status, data.code);
-      }
-
-      console.log(email+" "+school);
+      const data = await verifyStudent({email, school});
+      setIsInputVisible(true);
+      console.log("인증 요청: ", data);
     } catch (error) {
-      console.error("네트워크 오류:", error);
+      processError(error);
     }
   }
 
@@ -61,23 +58,10 @@ const SignUp = ({ setType }) => {
     const{ email, school } = formData;
 
     try {
-      const response = await axios.post("/auth/student/confirm", {
-        email,
-        school,
-        code
-      })
-
-      const data = await response.data;
-
-      if(response.ok){
-        console.log("인증 완료되었습니다.")
-      } else {
-        handleApiError(response.status, data.code);
-      }
-
-      console.log(email+" "+school);
+      const data = await confirmCode({email, school, code});
+      console.log("인증 성공: ", data);
     } catch (error) {
-      console.error("네트워크 오류:", error);
+      processError(error);
     }
   }
 
@@ -97,23 +81,11 @@ const SignUp = ({ setType }) => {
     dispatch(setAuthData({ email, password, nickname }));
 
     try {
-      const response = await axios.post("/signup", {
-        email,
-        password,
-        nickname,
-      })
-
-      const data = await response.data;
-
-      if(response.ok){
-        alert("회원가입이 완료되었습니다!");
-        setType("login");
-      } else {
-        handleApiError(response.status, data.code);
-      }
-
+      const data = await submitSignup({email, password, nickname});
+      console.log("회원가입 성공: ", data);
+      setType("login");
     } catch (error) {
-      console.error("네트워크 오류:", error);
+      processError(error);
     }
   };
 
