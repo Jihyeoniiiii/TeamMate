@@ -1,16 +1,15 @@
 import styled from "styled-components";
 import Button from "./Button";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setAuthData } from "../store/authSlice"
 import axios from "axios";
 import { handleApiError } from "../utils/handleApiError";
 
-const SignUp = () => {
-  const { email, password, confirmPassword, school, nickname } = useSelector((state) => state.auth);
+const SignUp = ({ setType }) => {
   const dispatch = useDispatch();
   const [isInputVisible, setIsInputVisible] = useState(false);
-  const [code, setCode] = useState();
+  const [code, setCode] = useState("");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -31,6 +30,8 @@ const SignUp = () => {
       alert("모두 입력해주세요!")
       return;
     }
+
+    setIsInputVisible(true)
 
     try {
       const response = await axios.post("/auth/student/verify", {
@@ -80,7 +81,9 @@ const SignUp = () => {
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const{ email, password, nickname, confirmPassword } = formData;
+    
     if (!email || !password || !nickname || !confirmPassword) {
       alert("모든 입력값을 채워주세요!");
       return;
@@ -91,8 +94,27 @@ const SignUp = () => {
       return;
     }
 
-    dispatch(setAuthData({ email, password, school, nickname }));
-    console.log(email, password, school, nickname); // 입력값을 백엔드로 전송
+    dispatch(setAuthData({ email, password, nickname }));
+
+    try {
+      const response = await axios.post("/signup", {
+        email,
+        password,
+        nickname,
+      })
+
+      const data = await response.data;
+
+      if(response.ok){
+        alert("회원가입이 완료되었습니다!");
+        setType("login");
+      } else {
+        handleApiError(response.status, data.code);
+      }
+
+    } catch (error) {
+      console.error("네트워크 오류:", error);
+    }
   };
 
   return (
@@ -149,11 +171,12 @@ const SignUp = () => {
         placeholder="비밀번호"
       />
       <Input
-        type="password"
-        name="cofirmPassword"
-        onChange={formData.handleChange}
-        placeholder="비밀번호 확인"
-      />
+  type="password"
+  name="confirmPassword"
+  value={formData.confirmPassword}
+  onChange={handleChange}
+  placeholder="비밀번호 확인"
+/>
       <ButtonWrapper>
         <Button text="회원가입" onClick={handleSubmit}></Button>
       </ButtonWrapper>

@@ -16,7 +16,7 @@ const Modal = ({ type, setType, onClose }) => {
           <img src={CloseIcon} alt="Close" width={15} height={15} />
         </CloseButton>
         <TopSection><img src={mainLogo} width={180} height={100}/></TopSection>
-        {type === "login" ? <Login /> : <SignUp />}
+        {type === "login" ? <Login /> : <SignUp setType={setType} />}
         <SwitchTypeButton
           onClick={() => {
             setType(type === "login" ? "signup" : "login")
