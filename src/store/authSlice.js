@@ -3,22 +3,25 @@ import { createSlice } from "@reduxjs/toolkit";
 const authSlice = createSlice({
     name: 'auth',
     initialState: {
+        school: '',
+        nickname: '',
         email: '',
         password: '',
+        confirmPassword: '',
     },
     reducers: {
-        setEmail: (state, action) => {
-            state.email = action.payload;
-        },
-        setPassword: (state, action) => {
-            state.password = action.payload;
+        setAuthData: (state, action) => {
+            Object.assign(state, action.payload);
         },
         resetAuth: (state) => {
+            state.school = '';
+            state.nickname = '';
             state.email = '';
             state.password = '';
+            state.confirmPassword = '';
         },
     },
 })
 
-export const { setEmail, setPassword, resetAuth } = authSlice.actions;
+export const { setAuthData, resetAuth } = authSlice.actions;
 export default authSlice.reducer;

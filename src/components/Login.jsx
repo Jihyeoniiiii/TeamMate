@@ -1,28 +1,31 @@
 import styled from "styled-components";
 import Button from "./Button";
 import { useDispatch, useSelector } from "react-redux";
-import { setEmail, setPassword } from "../store/authSlice";
+import { useState } from "react";
+import { setAuthData } from "../store/authSlice";
 
 const Login = () => {
   const { email, password } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  })
 
-  const handleIdChange = (e) => {
-    dispatch(setEmail(e.target.value));
-  }
-
-  const handlePasswordChange = (e) => {
-    dispatch(setPassword(e.target.value));
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+    setFormData((prev) => ({...prev, [name]: value}));
   }
 
   const handleSubmit = () => {
     console.log(email, password); // 아이디, 패스워드 백엔드로 보내줌
+    dispatch(setAuthData({ email, password}));
   }
 
   return (
     <>
-      <Input type="email" value={email} onChange={handleIdChange} placeholder="아이디" />
-      <Input type="password" value={password} onChange={handlePasswordChange} placeholder="비밀번호" />
+      <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="아이디" />
+      <Input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="비밀번호" />
       <ButtonWrapper>
         <Button text="로그인" onClick={handleSubmit}></Button>
       </ButtonWrapper>
@@ -41,7 +44,7 @@ const Input = styled.input`
 `;
 
 const ButtonWrapper = styled.div`
-  margin-top: 30px;
+  margin: 10px 0;
   width: 100%;
 `;
 

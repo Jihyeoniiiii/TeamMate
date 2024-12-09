@@ -1,10 +1,11 @@
 import styled from "styled-components"
 import Button from "./Button"
+import mainLogo from "../assets/images/main-logo.png"
 
 const NavigationBar = ({ onClick }) => {
   return (
     <MenuContainer>
-        <LeftSection>TEAMMATE</LeftSection>
+        <LeftSection><img src={mainLogo} width={150} height={80}/></LeftSection>
         <MiddleSection>
             <button>프로젝트</button>
             <button>커뮤니티</button>
