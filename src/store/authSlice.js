@@ -11,11 +11,7 @@ const authSlice = createSlice({
     },
     reducers: {
         setAuthData: (state, action) => {
-            state.school = action.payload;
-            state.nickname = action.payload;
-            state.email = action.payload;
-            state.password = action.payload;
-            state.confirmPassword = action.payload;
+            Object.assign(state, action.payload);
         },
         resetAuth: (state) => {
             state.school = '';
