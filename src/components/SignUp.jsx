@@ -9,6 +9,7 @@ import { confirmCode, submitSignup, verifyStudent } from "../api/auth";
 const SignUp = ({ setType }) => {
   const dispatch = useDispatch();
   const [isInputVisible, setIsInputVisible] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
   const [code, setCode] = useState("");
   const [formData, setFormData] = useState({
     email: "",
@@ -59,6 +60,7 @@ const SignUp = ({ setType }) => {
 
     try {
       const data = await confirmCode({email, school, code});
+      setIsVerified(true);
       console.log("인증 성공: ", data);
     } catch (error) {
       processError(error);
@@ -96,6 +98,7 @@ const SignUp = ({ setType }) => {
         name="email"
         value={formData.email}
         onChange={handleChange}
+        disabled={isVerified}
         placeholder="학교 이메일"
       />
       <Input
@@ -103,6 +106,7 @@ const SignUp = ({ setType }) => {
         name="school"
         value={formData.school}
         onChange={handleChange}
+        disabled={isVerified}
         placeholder="학교명"
       />
       <ButtonWrapper>
@@ -132,6 +136,7 @@ const SignUp = ({ setType }) => {
         type="email"
         name="email"
         value={formData.email}
+        disabled={isVerified}
         placeholder="아이디"
         readOnly
       />
