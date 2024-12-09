@@ -11,6 +11,17 @@ const projectSlice = createSlice({
         technologies: '',
     },
     reducers: {
+        setProjectData: (state, action) => {
+            Object.assign(state, action.payload); // 모든 상태를 한 번에 업데이트
+        },
+        resetProject: (state) => {
+            state.projectName = '';
+            state.platform = '';
+            state.image = null;
+            state.members = [];
+            state.description = '';
+            state.technologies = '';
+        },
         setProjectName: (state, action) => {
             state.projectName = action.payload;
         },
@@ -36,18 +47,12 @@ const projectSlice = createSlice({
         setTechnologies: (state, action) => {
             state.technologies = action.payload;
         },
-        resetProject: () => ({
-            projectName: '',
-            platform: '',
-            image: null,
-            members: [],
-            description: '',
-            technologies: '',
-        }),
     },
 });
 
 export const {
+    setProjectData,
+    resetProject,
     setProjectName,
     setPlatform,
     setImage,
@@ -56,7 +61,6 @@ export const {
     removeMember,
     setDescription,
     setTechnologies,
-    resetProject,
 } = projectSlice.actions;
 
 export default projectSlice.reducer;

@@ -1,33 +1,26 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "../components/Button";
-import WhiteButton from "../components/WhiteButton";
 import NavigationBar from "../components/NavigationBar";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setProjectName,
-  setPlatform,
-  setImage,
+  setProjectData,
+  resetProject,
   addMember,
   updateMember,
   removeMember,
-  setDescription,
-  setTechnologies,
-  resetProject,
 } from "../store/projectSlice";
 
 const ProjectCreationPage = () => {
-  const {
-    projectName,
-    platform,
-    image,
-    members,
-    description,
-    technologies,
-  } = useSelector((state) => state.project);
+  const projectState = useSelector((state) => state.project);
   const dispatch = useDispatch();
 
-  const [imagePreview, setImagePreview] = useState(null); // 이미지 미리보기 상태
+  const [imagePreview, setImagePreview] = useState(projectState.image); // 이미지 미리보기 상태
+
+  // 입력 핸들러 (한 번에 모든 필드 업데이트 가능)
+  const handleInputChange = (field, value) => {
+    dispatch(setProjectData({ ...projectState, [field]: value }));
+  };
 
   // 이미지 업로드 핸들러
   const handleImageUpload = (e) => {
@@ -35,42 +28,36 @@ const ProjectCreationPage = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result); 
-        dispatch(setImage(reader.result)); 
+        setImagePreview(reader.result);
+        handleInputChange("image", reader.result);
       };
-      reader.readAsDataURL(file); 
+      reader.readAsDataURL(file);
     }
   };
 
+  // 멤버 인원수 변경 핸들러
   const handleMemberCountChange = (index, value) => {
     if (value >= 0) {
       dispatch(
         updateMember({
           index,
-          member: { ...members[index], count: value },
+          member: { ...projectState.members[index], count: value },
         })
       );
     }
   };
 
+  // 제출 핸들러
   const handleSubmit = () => {
-    const projectData = {
-      projectName,
-      platform,
-      image,
-      members,
-      description,
-      technologies,
-    };
-    console.log(projectData); // 서버로 보내는 로직 추가
+    console.log(projectState); // 서버로 보내는 로직 추가
     dispatch(resetProject());
   };
 
   useEffect(() => {
-    if (members.length === 0) {
-      dispatch(addMember({ role: "", count: 1 })); 
+    if (projectState.members.length === 0) {
+      dispatch(addMember({ role: "", count: 1 }));
     }
-  }, [dispatch, members.length]);
+  }, [dispatch, projectState.members.length]);
 
   return (
     <>
@@ -82,8 +69,8 @@ const ProjectCreationPage = () => {
           프로젝트명
           <Input
             type="text"
-            value={projectName}
-            onChange={(e) => dispatch(setProjectName(e.target.value))}
+            value={projectState.projectName}
+            onChange={(e) => handleInputChange("projectName", e.target.value)}
             placeholder="프로젝트명"
           />
         </Label>
@@ -91,8 +78,8 @@ const ProjectCreationPage = () => {
         <Label>
           출시 플랫폼
           <Select
-            value={platform}
-            onChange={(e) => dispatch(setPlatform(e.target.value))}
+            value={projectState.platform}
+            onChange={(e) => handleInputChange("platform", e.target.value)}
           >
             <option value="" disabled>
               출시 플랫폼을 선택하세요
@@ -111,60 +98,65 @@ const ProjectCreationPage = () => {
               alt="미리보기"
             />
             <UploadButton>
+              <button>
+                <label htmlFor="image-upload">이미지 업로드</label>
+              </button>
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleImageUpload}
                 id="image-upload"
               />
-              <label htmlFor="image-upload">이미지 업로드</label>
             </UploadButton>
           </ImageWrapper>
         </Label>
 
+
         <Label>모집 인원
-        {members.map((member, index) => (
-          <MemberWrapper key={index}>
-            <Input
-              type="text"
-              value={member.role}
-              onChange={(e) =>
-                dispatch(
-                  updateMember({
-                    index,
-                    member: { ...member, role: e.target.value },
-                  })
-                )
-              }
-              placeholder="역할 (예: Frontend)"
+          {projectState.members.map((member, index) => (
+            <MemberWrapper key={index}>
+              <Input
+                type="text"
+                value={member.role}
+                onChange={(e) =>
+                  dispatch(
+                    updateMember({
+                      index,
+                      member: { ...member, role: e.target.value },
+                    })
+                  )
+                }
+                placeholder="역할 (예: Frontend)"
+              />
+              <Input
+                type="number"
+                value={member.count}
+                onChange={(e) =>
+                  handleMemberCountChange(index, parseInt(e.target.value) || 1)
+                }
+                placeholder="인원수"
+              />
+              <Button
+                text="삭제"
+                onClick={() => dispatch(removeMember(index))}
+                bgColor="white"
+                textColor={(props) => props.theme.colors.accent}
+              />
+            </MemberWrapper>
+          ))}
+          <ButtonWrapper>
+            <Button
+              text="역할 추가"
+              onClick={() => dispatch(addMember({ role: "", count: 1 }))}
             />
-            <Input
-              type="number"
-              value={member.count}
-              onChange={(e) =>
-                handleMemberCountChange(index, parseInt(e.target.value) || 1)
-              }
-              placeholder="인원수"
-            />
-            <WhiteButton
-              text="삭제"
-              onClick={() => dispatch(removeMember(index))}
-            />
-          </MemberWrapper>
-        ))}
-        <ButtonWrapper>
-          <Button
-            text="역할 추가"
-            onClick={() => dispatch(addMember({ role: "", count: 1 }))}
-          />
-        </ButtonWrapper>
+          </ButtonWrapper>
         </Label>
 
         <Label>
           프로젝트 소개
           <TextArea
-            value={description}
-            onChange={(e) => dispatch(setDescription(e.target.value))}
+            value={projectState.description}
+            onChange={(e) => handleInputChange("description", e.target.value)}
             placeholder="프로젝트 소개"
           />
         </Label>
@@ -173,8 +165,8 @@ const ProjectCreationPage = () => {
           기술/언어
           <Input
             type="text"
-            value={technologies}
-            onChange={(e) => dispatch(setTechnologies(e.target.value))}
+            value={projectState.technologies}
+            onChange={(e) => handleInputChange("technologies", e.target.value)}
             placeholder="사용 기술/언어"
           />
         </Label>
@@ -187,6 +179,7 @@ const ProjectCreationPage = () => {
   );
 };
 
+// 스타일 정의는 그대로 유지
 const Title = styled.h1`
   text-align: center;
   font-size: 24px;
@@ -261,20 +254,21 @@ const ImagePreview = styled.img`
 const UploadButton = styled.div`
   margin-left: 20px;
 
-  label {
+  button {
     cursor: pointer;
     background-color: white;
-    color: blue;
+    color: ${(props) => props.theme.colors.accent};
     padding: 10px;
     border-radius: 5px;
     font-size: 14px;
-    border: 1px solid blue;
+    border: 1px solid ${(props) => props.theme.colors.accent};
   }
 
   input[type="file"] {
     display: none;
   }
 `;
+
 
 const ButtonWrapper = styled.div`
   margin-top: 20px;
