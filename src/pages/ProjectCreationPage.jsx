@@ -51,6 +51,7 @@ const ProjectCreationPage = () => {
   const handleSubmit = () => {
     console.log(projectState); // 서버로 보내는 로직 추가
     dispatch(resetProject());
+    setImagePreview(null);
   };
 
   useEffect(() => {
