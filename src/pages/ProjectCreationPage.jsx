@@ -85,9 +85,11 @@ const ProjectCreationPage = () => {
             <option value="" disabled>
               출시 플랫폼을 선택하세요
             </option>
-            <option value="web">Web</option>
-            <option value="mobile">Mobile</option>
-            <option value="desktop">Desktop</option>
+            <option value="not">미정 (추후 논의)</option>
+            <option value="web">반응형 웹(PC/모바일)</option>
+            <option value="android">안드로이드 앱</option>
+            <option value="ios">IOS 앱</option>
+            <option value="desktop">PC 프로그램</option>
           </Select>
         </Label>
 
