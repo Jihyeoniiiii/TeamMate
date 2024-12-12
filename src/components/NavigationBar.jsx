@@ -1,11 +1,18 @@
 import styled from "styled-components"
 import Button from "./Button"
 import mainLogo from "../assets/images/main-logo.png"
+import { useNavigate } from "react-router-dom"
 
 const NavigationBar = ({ onClick }) => {
+    const nav = useNavigate();
+
+    const handleNavigate = () => {
+        nav('/');
+    }
+
   return (
     <MenuContainer>
-        <LeftSection><img src={mainLogo} width={150} height={80}/></LeftSection>
+        <LeftSection onClick={handleNavigate}><img src={mainLogo} width={150} height={80}/></LeftSection>
         <MiddleSection>
             <button>프로젝트</button>
             <button>커뮤니티</button>
@@ -28,7 +35,7 @@ const MenuContainer = styled.div`
 `
 
 const LeftSection = styled.div`
-
+    cursor: pointer;
 `
 
 const MiddleSection = styled.div`
