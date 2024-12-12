@@ -4,6 +4,9 @@ const projectSlice = createSlice({
     name: 'project',
     initialState: {
         projectName: '',
+        startDate: '',
+        endDate: '',
+        deadLine: '',
         platform: '',
         image: null,
         members: [],
@@ -16,6 +19,9 @@ const projectSlice = createSlice({
         },
         resetProject: (state) => {
             state.projectName = '';
+            state.startDate = '';
+            state.endDate = '';
+            state.deadLine = '';
             state.platform = '';
             state.image = null;
             state.members = [];

@@ -93,6 +93,23 @@ const ProjectCreationPage = () => {
         </Label>
 
         <Label>
+          프로젝트 기간
+          <DateWrapper>
+            <Input
+              type="date"
+              value={projectState.startDate}
+              onChange={(e) => handleInputChange("startDate",e.target.value)}
+            />
+            ~
+            <Input
+              type="date"
+              value={projectState.endDate}
+              onChange={(e) => handleInputChange("endDate",e.target.value)}
+            />
+          </DateWrapper>
+        </Label>
+
+        <Label>
           출시 플랫폼
           <Select
             value={projectState.platform}
@@ -203,6 +220,15 @@ const ProjectCreationPage = () => {
           />
         </Label>
 
+        <Label>
+          모집 마감일
+          <Input 
+            type = "date"
+            value={projectState.deadLine}
+            onChange={(e)=> handleInputChange("deadLine", e.target.value)}
+            />
+        </Label>
+
 
         <ButtonWrapper>
           <Button text="제출" onClick={handleSubmit} />
@@ -212,7 +238,14 @@ const ProjectCreationPage = () => {
   );
 };
 
-// 스타일 정의는 그대로 유지
+
+const DateWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+
 const Title = styled.h1`
   text-align: center;
   font-size: 24px;
