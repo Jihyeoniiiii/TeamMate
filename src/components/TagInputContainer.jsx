@@ -6,7 +6,8 @@ const TagInputContainer = styled.div`
   flex-wrap: wrap;
   gap: 8px;
   border: 1px solid ${(props) => props.theme.colors.lightgrey};
-  padding: 8px;
+  padding: 10px;
+  margin: 8px 0;
   border-radius: 10px;
 `;
 
@@ -29,6 +30,7 @@ const Input = styled.input`
   border: none;
   outline: none;
   flex: 1;
+  font-size: 16px;
 `;
 
 const TagInput = ({ tags, setTags, placeholder }) => {
@@ -39,7 +41,7 @@ const TagInput = ({ tags, setTags, placeholder }) => {
       if (!tags.includes(inputValue.trim())) {
         setTags([...tags, inputValue.trim()]);
       }
-      setInputValue(""); // Clear the input field
+      setInputValue("");
     }
   };
 
