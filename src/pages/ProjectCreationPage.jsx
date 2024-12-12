@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "../components/Button";
+import TagInput from "../components/TagInputContainer";
 import NavigationBar from "../components/NavigationBar";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,10 +12,25 @@ import {
   removeMember,
 } from "../store/projectSlice";
 
+const roles = [
+  { id: 1, name: "기획" },
+  { id: 2, name: "디자인" },
+  { id: 3, name: "프론트엔드 개발" },
+  { id: 4, name: "백엔드 개발" },
+  { id: 5, name: "안드로이드 개발" },
+  { id: 6, name: "IOS 개발" },
+  { id: 7, name: "AI" },
+  { id: 8, name: "보안" },
+];
+
 const ProjectCreationPage = () => {
+
   const projectState = useSelector((state) => state.project);
   const dispatch = useDispatch();
 
+  const [technologies, setTechnologies] = useState(
+    projectState.technologies ? projectState.technologies.split(", ") : []
+  );
   const [imagePreview, setImagePreview] = useState(projectState.image); // 이미지 미리보기 상태
 
   // 입력 핸들러 (한 번에 모든 필드 업데이트 가능)
@@ -118,8 +134,7 @@ const ProjectCreationPage = () => {
         <Label>모집 인원
           {projectState.members.map((member, index) => (
             <MemberWrapper key={index}>
-              <Input
-                type="text"
+              <Select
                 value={member.role}
                 onChange={(e) =>
                   dispatch(
@@ -129,8 +144,19 @@ const ProjectCreationPage = () => {
                     })
                   )
                 }
-                placeholder="역할 (예: Frontend)"
-              />
+                style={{
+                  color: member.role ? "black" : "gray",
+                }}
+              >
+                <option value="" disabled hidden>
+                  역할 선택
+                </option>
+                {roles.map((role) => (
+                  <option key={role.id} value={role.name}>
+                    {role.name}
+                  </option>
+                ))}
+              </Select>
               <Input
                 type="number"
                 value={member.count}
@@ -155,6 +181,7 @@ const ProjectCreationPage = () => {
           </ButtonWrapper>
         </Label>
 
+
         <Label>
           프로젝트 소개
           <TextArea
@@ -166,13 +193,16 @@ const ProjectCreationPage = () => {
 
         <Label>
           기술/언어
-          <Input
-            type="text"
-            value={projectState.technologies}
-            onChange={(e) => handleInputChange("technologies", e.target.value)}
-            placeholder="사용 기술/언어"
+          <TagInput
+            tags={technologies}
+            setTags={(tags) => {
+              setTechnologies(tags);
+              handleInputChange("technologies", tags.join(", "));
+            }}
+            placeholder="사용 기술/언어 입력 후 Enter"
           />
         </Label>
+
 
         <ButtonWrapper>
           <Button text="제출" onClick={handleSubmit} />
