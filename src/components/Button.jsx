@@ -20,6 +20,7 @@ const Wrapper = styled.button`
   border-radius: 10px;
   border: 1px solid ${(props) => props.$borderColor || props.theme.colors.accent};
   font-size: 15px;
+  cursor: pointer;
 `;
 
 export default Button;
