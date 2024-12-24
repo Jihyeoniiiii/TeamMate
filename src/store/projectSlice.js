@@ -10,7 +10,7 @@ const projectSlice = createSlice({
         platform: '',
         createdAt: '',
         image: null,
-        platfrom_dto_list: [],
+        platform_dto_list: [{ role: "", count: 1 }],
         description: '',
         technologies: [],
     },
@@ -26,20 +26,20 @@ const projectSlice = createSlice({
             state.createAt = '';
             state.platform = '';
             state.image = null;
-            state.platfrom_dto_list = [];
+            state.platform_dto_list = [{ role: "", count: 1 }];
             state.description = '';
             state.technologies = [];
         },
         
         addMember: (state, action) => {
-            state.platfrom_dto_list.push(action.payload);
+            state.platform_dto_list.push(action.payload);
         },
         updateMember: (state, action) => {
             const { index, member } = action.payload;
-            state.platfrom_dto_list[index] = member;
+            state.platform_dto_list[index] = member;
         },
         removeMember: (state, action) => {
-            state.platfrom_dto_list.splice(action.payload, 1);
+            state.platform_dto_list.splice(action.payload, 1);
         },
         
     },
