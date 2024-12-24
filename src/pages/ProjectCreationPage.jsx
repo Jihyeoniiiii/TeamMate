@@ -24,21 +24,16 @@ const roles = [
 ];
 
 const ProjectCreationPage = () => {
-
   const projectState = useSelector((state) => state.project);
   const dispatch = useDispatch();
 
-  const [technologies, setTechnologies] = useState(
-    projectState.technologies ? projectState.technologies.split(", ") : []
-  );
-  const [imagePreview, setImagePreview] = useState(projectState.image); // 이미지 미리보기 상태
+  const [technologies, setTechnologies] = useState(projectState.technology_id_list || []);
+  const [imagePreview, setImagePreview] = useState(projectState.image || "");
 
-  // 입력 핸들러 (한 번에 모든 필드 업데이트 가능)
   const handleInputChange = (field, value) => {
     dispatch(setProjectData({ ...projectState, [field]: value }));
   };
 
-  // 이미지 업로드 핸들러
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -51,42 +46,40 @@ const ProjectCreationPage = () => {
     }
   };
 
-  // 멤버 인원수 변경 핸들러
   const handleMemberCountChange = (index, value) => {
     if (value >= 0) {
       dispatch(
         updateMember({
           index,
-          member: { ...projectState.members[index], count: value },
+          member: { ...projectState.platform_dto_list[index], count: value },
         })
       );
     }
   };
 
-  // 제출 핸들러
   const handleSubmit = () => {
-    console.log(projectState); // 서버로 보내는 로직 추가
+    console.log(projectState);
     dispatch(resetProject());
-    setImagePreview(null);
+    setImagePreview("");
   };
 
   useEffect(() => {
-    if (projectState.members.length === 0) {
+    const platformList = projectState.platform_dto_list || [];
+    if (platformList.length === 0) {
       dispatch(addMember({ role: "", count: 1 }));
     }
-  }, [dispatch, projectState.members.length]);
-
+  }, [dispatch, projectState.platform_dto_list]);
+  
   return (
     <>
       <NavigationBar />
       <Container>
         <Title>프로젝트 모집 글 작성</Title>
-        <br />
         <Label>
           프로젝트명
           <Input
             type="text"
-            value={projectState.projectName}
+            value={projectState.projectName || ""}
             onChange={(e) => handleInputChange("projectName", e.target.value)}
             placeholder="프로젝트명"
           />
@@ -97,14 +90,14 @@ const ProjectCreationPage = () => {
           <DateWrapper>
             <Input
               type="date"
-              value={projectState.startDate}
-              onChange={(e) => handleInputChange("startDate",e.target.value)}
+              value={projectState.startDate || ""}
+              onChange={(e) => handleInputChange("startDate", e.target.value)}
             />
             ~
             <Input
               type="date"
-              value={projectState.endDate}
-              onChange={(e) => handleInputChange("endDate",e.target.value)}
+              value={projectState.endDate || ""}
+              onChange={(e) => handleInputChange("endDate", e.target.value)}
             />
           </DateWrapper>
         </Label>
@@ -112,7 +105,7 @@ const ProjectCreationPage = () => {
         <Label>
           출시 플랫폼
           <Select
-            value={projectState.platform}
+            value={projectState.platform_id_list || ""}
             onChange={(e) => handleInputChange("platform", e.target.value)}
           >
             <option value="" disabled>
@@ -134,9 +127,7 @@ const ProjectCreationPage = () => {
               alt="미리보기"
             />
             <UploadButton>
-              <button>
-                <label htmlFor="image-upload">이미지 업로드</label>
-              </button>
+              <label htmlFor="image-upload">이미지 업로드</label>
               <input
                 type="file"
                 accept="image/*"
@@ -147,49 +138,50 @@ const ProjectCreationPage = () => {
           </ImageWrapper>
         </Label>
 
-
-        <Label>모집 인원
-          {projectState.members.map((member, index) => (
-            <MemberWrapper key={index}>
-              <Select
-                value={member.role}
-                onChange={(e) =>
-                  dispatch(
-                    updateMember({
-                      index,
-                      member: { ...member, role: e.target.value },
-                    })
-                  )
-                }
-                style={{
-                  color: member.role ? "black" : "gray",
-                }}
-              >
-                <option value="" disabled hidden>
-                  역할 선택
-                </option>
-                {roles.map((role) => (
-                  <option key={role.id} value={role.name}>
-                    {role.name}
+        <Label>
+          모집 인원
+            {(projectState.platform_dto_list || []).map((member, index) => (
+              <MemberWrapper key={index}>
+                <Select
+                  value={member.role}
+                  onChange={(e) =>
+                    dispatch(
+                      updateMember({
+                        index,
+                        member: { ...member, role: e.target.value },
+                      })
+                    )
+                  }
+                  style={{
+                    color: member.role ? "black" : "gray",
+                  }}
+                >
+                  <option value="" disabled hidden>
+                    역할 선택
                   </option>
-                ))}
-              </Select>
-              <Input
-                type="number"
-                value={member.count}
-                onChange={(e) =>
-                  handleMemberCountChange(index, parseInt(e.target.value) || 1)
-                }
-                placeholder="인원수"
-              />
-              <Button
-                text="삭제"
-                onClick={() => dispatch(removeMember(index))}
-                bgColor="white"
-                textColor={(props) => props.theme.colors.accent}
-              />
-            </MemberWrapper>
-          ))}
+                  {roles.map((role) => (
+                    <option key={role.id} value={role.name}>
+                      {role.name}
+                    </option>
+                  ))}
+                </Select>
+                <Input
+                  type="number"
+                  value={member.count}
+                  onChange={(e) =>
+                    handleMemberCountChange(index, parseInt(e.target.value) || 1)
+                  }
+                  placeholder="인원수"
+                />
+                <Button
+                  text="삭제"
+                  onClick={() => dispatch(removeMember(index))}
+                  bgColor="white"
+                  textColor={(props) => props.theme.colors.accent}
+                />
+              </MemberWrapper>
+            ))}
+            
           <ButtonWrapper>
             <Button
               text="역할 추가"
@@ -198,11 +190,10 @@ const ProjectCreationPage = () => {
           </ButtonWrapper>
         </Label>
 
-
         <Label>
           프로젝트 소개
           <TextArea
-            value={projectState.description}
+            value={projectState.description || ""}
             onChange={(e) => handleInputChange("description", e.target.value)}
             placeholder="프로젝트 소개"
           />
@@ -214,7 +205,7 @@ const ProjectCreationPage = () => {
             tags={technologies}
             setTags={(tags) => {
               setTechnologies(tags);
-              handleInputChange("technologies", tags.join(", "));
+              handleInputChange("technologies", tags);
             }}
             placeholder="사용 기술/언어 입력 후 Enter"
           />
@@ -222,13 +213,12 @@ const ProjectCreationPage = () => {
 
         <Label>
           모집 마감일
-          <Input 
-            type = "date"
-            value={projectState.deadLine}
-            onChange={(e)=> handleInputChange("deadLine", e.target.value)}
-            />
+          <Input
+            type="date"
+            value={projectState.deadLine || ""}
+            onChange={(e) => handleInputChange("deadLine", e.target.value)}
+          />
         </Label>
-
 
         <ButtonWrapper>
           <Button text="제출" onClick={handleSubmit} />
@@ -238,13 +228,11 @@ const ProjectCreationPage = () => {
   );
 };
 
-
 const DateWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
 `;
-
 
 const Title = styled.h1`
   text-align: center;
@@ -306,35 +294,30 @@ const MemberWrapper = styled.div`
 const ImageWrapper = styled.div`
   display: flex;
   align-items: center;
+  gap: 10px;
 `;
 
 const ImagePreview = styled.img`
   width: 300px;
   height: 190px;
-  margin: 8px 0;
   border-radius: 10px;
   object-fit: cover;
-  background-color: lightgray; 
+  background-color: lightgray;
 `;
 
-const UploadButton = styled.div`
-  margin-left: 20px;
-
-  button {
-    cursor: pointer;
-    background-color: white;
-    color: ${(props) => props.theme.colors.accent};
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    border: 1px solid ${(props) => props.theme.colors.accent};
-  }
+const UploadButton = styled.label`
+  cursor: pointer;
+  background-color: ${(props) => props.theme.colors.accent};
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  display: inline-block;
 
   input[type="file"] {
     display: none;
   }
 `;
-
 
 const ButtonWrapper = styled.div`
   margin-top: 20px;

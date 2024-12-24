@@ -8,10 +8,11 @@ const projectSlice = createSlice({
         endDate: '',
         deadLine: '',
         platform: '',
+        createdAt: '',
         image: null,
-        members: [],
+        platfrom_dto_list: [],
         description: '',
-        technologies: '',
+        technologies: [],
     },
     reducers: {
         setProjectData: (state, action) => {
@@ -22,22 +23,23 @@ const projectSlice = createSlice({
             state.startDate = '';
             state.endDate = '';
             state.deadLine = '';
+            state.createAt = '';
             state.platform = '';
             state.image = null;
-            state.members = [];
+            state.platfrom_dto_list = [];
             state.description = '';
-            state.technologies = '';
+            state.technologies = [];
         },
         
         addMember: (state, action) => {
-            state.members.push(action.payload);
+            state.platfrom_dto_list.push(action.payload);
         },
         updateMember: (state, action) => {
             const { index, member } = action.payload;
-            state.members[index] = member;
+            state.platfrom_dto_list[index] = member;
         },
         removeMember: (state, action) => {
-            state.members.splice(action.payload, 1);
+            state.platfrom_dto_list.splice(action.payload, 1);
         },
         
     },
