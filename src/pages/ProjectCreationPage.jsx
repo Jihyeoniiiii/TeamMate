@@ -12,23 +12,13 @@ import {
   removeMember,
 } from "../store/projectSlice";
 
-const roles = [
-  { id: 1, name: "기획" },
-  { id: 2, name: "디자인" },
-  { id: 3, name: "프론트엔드 개발" },
-  { id: 4, name: "백엔드 개발" },
-  { id: 5, name: "안드로이드 개발" },
-  { id: 6, name: "IOS 개발" },
-  { id: 7, name: "AI" },
-  { id: 8, name: "보안" },
-];
-
 const ProjectCreationPage = () => {
   const projectState = useSelector((state) => state.project);
   const dispatch = useDispatch();
 
   const [technologies, setTechnologies] = useState(projectState.technology_id_list || []);
   const [imagePreview, setImagePreview] = useState(projectState.image || "");
+  const [errors, setErrors] = useState({});
 
   const handleInputChange = (field, value) => {
     dispatch(setProjectData({ ...projectState, [field]: value }));
@@ -57,10 +47,31 @@ const ProjectCreationPage = () => {
     }
   };
 
+  const validateFields = () => {
+    const newErrors = {};
+    if (!projectState.projectName) newErrors.projectName = "프로젝트명을 입력해주세요.";
+    if (!projectState.startDate) newErrors.startDate = "프로젝트 시작 날짜를 선택해주세요.";
+    if (!projectState.endDate) newErrors.endDate = "프로젝트 종료 날짜를 선택해주세요.";
+    if (!projectState.platform_id_list) newErrors.platform = "출시 플랫폼을 선택해주세요.";
+    if (!projectState.image) newErrors.image = "대표 이미지를 업로드해주세요.";
+    if (!projectState.description) newErrors.description = "프로젝트 소개를 작성해주세요.";
+    if (!projectState.deadLine) newErrors.deadLine = "모집 마감일을 선택해주세요.";
+    if (!technologies.length) newErrors.technologies = "기술/언어를 최소 하나 입력해주세요.";
+    setErrors(newErrors);
+
+    // 에러가 없으면 true 반환
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = () => {
-    console.log(projectState);
-    dispatch(resetProject());
-    setImagePreview("");
+    if (validateFields()) {
+      console.log(projectState);
+      dispatch(resetProject());
+      setImagePreview("");
+      alert("프로젝트가 성공적으로 제출되었습니다.");
+    } else {
+      alert("모든 필수 입력 항목을 작성해주세요.");
+    }
   };
 
   useEffect(() => {
@@ -69,7 +80,7 @@ const ProjectCreationPage = () => {
       dispatch(addMember({ role: "", count: 1 }));
     }
   }, [dispatch, projectState.platform_dto_list]);
-  
+
   return (
     <>
       <NavigationBar />
@@ -83,6 +94,7 @@ const ProjectCreationPage = () => {
             onChange={(e) => handleInputChange("projectName", e.target.value)}
             placeholder="프로젝트명"
           />
+          {errors.projectName && <ErrorText>{errors.projectName}</ErrorText>}
         </Label>
 
         <Label>
@@ -100,6 +112,8 @@ const ProjectCreationPage = () => {
               onChange={(e) => handleInputChange("endDate", e.target.value)}
             />
           </DateWrapper>
+          {errors.startDate && <ErrorText>{errors.startDate}</ErrorText>}
+          {errors.endDate && <ErrorText>{errors.endDate}</ErrorText>}
         </Label>
 
         <Label>
@@ -117,6 +131,7 @@ const ProjectCreationPage = () => {
             <option value="ios">IOS 앱</option>
             <option value="desktop">PC 프로그램</option>
           </Select>
+          {errors.platform && <ErrorText>{errors.platform}</ErrorText>}
         </Label>
 
         <Label>
@@ -136,58 +151,7 @@ const ProjectCreationPage = () => {
               />
             </UploadButton>
           </ImageWrapper>
-        </Label>
-
-        <Label>
-          모집 인원
-            {(projectState.platform_dto_list || []).map((member, index) => (
-              <MemberWrapper key={index}>
-                <Select
-                  value={member.role}
-                  onChange={(e) =>
-                    dispatch(
-                      updateMember({
-                        index,
-                        member: { ...member, role: e.target.value },
-                      })
-                    )
-                  }
-                  style={{
-                    color: member.role ? "black" : "gray",
-                  }}
-                >
-                  <option value="" disabled hidden>
-                    역할 선택
-                  </option>
-                  {roles.map((role) => (
-                    <option key={role.id} value={role.name}>
-                      {role.name}
-                    </option>
-                  ))}
-                </Select>
-                <Input
-                  type="number"
-                  value={member.count}
-                  onChange={(e) =>
-                    handleMemberCountChange(index, parseInt(e.target.value) || 1)
-                  }
-                  placeholder="인원수"
-                />
-                <Button
-                  text="삭제"
-                  onClick={() => dispatch(removeMember(index))}
-                  bgColor="white"
-                  textColor={(props) => props.theme.colors.accent}
-                />
-              </MemberWrapper>
-            ))}
-            
-          <ButtonWrapper>
-            <Button
-              text="역할 추가"
-              onClick={() => dispatch(addMember({ role: "", count: 1 }))}
-            />
-          </ButtonWrapper>
+          {errors.image && <ErrorText>{errors.image}</ErrorText>}
         </Label>
 
         <Label>
@@ -197,6 +161,7 @@ const ProjectCreationPage = () => {
             onChange={(e) => handleInputChange("description", e.target.value)}
             placeholder="프로젝트 소개"
           />
+          {errors.description && <ErrorText>{errors.description}</ErrorText>}
         </Label>
 
         <Label>
@@ -209,6 +174,7 @@ const ProjectCreationPage = () => {
             }}
             placeholder="사용 기술/언어 입력 후 Enter"
           />
+          {errors.technologies && <ErrorText>{errors.technologies}</ErrorText>}
         </Label>
 
         <Label>
@@ -218,6 +184,7 @@ const ProjectCreationPage = () => {
             value={projectState.deadLine || ""}
             onChange={(e) => handleInputChange("deadLine", e.target.value)}
           />
+          {errors.deadLine && <ErrorText>{errors.deadLine}</ErrorText>}
         </Label>
 
         <ButtonWrapper>
@@ -227,6 +194,12 @@ const ProjectCreationPage = () => {
     </>
   );
 };
+
+const ErrorText = styled.p`
+  color: red;
+  font-size: 12px;
+  margin: 5px 0 0 0;
+`;
 
 const DateWrapper = styled.div`
   display: flex;
