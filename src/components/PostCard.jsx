@@ -2,6 +2,7 @@ import styled from "styled-components"
 import SmallHeart from "../assets/icon/SmallHeart.svg"
 import DefaultImage from "../assets/images/default-image.jpg"
 import Heart from "../assets/icon/Heart.svg"
+import SmallSpeechBubble from "../assets/icon/SmallSpeechBubble.svg"
 
 const PostCard = ({ data, type }) => {
   return (
@@ -15,7 +16,12 @@ const PostCard = ({ data, type }) => {
             <Title>{data.title}</Title>
             <Description>{data.description}</Description>
             <Description>{data.tag}</Description>
-            <Description><img src={SmallHeart} width={12} height={12} /> 3</Description>
+            <CommentSection>
+              <Description><img src={SmallHeart} width={12} height={12} /> 3</Description>
+              { type === "커뮤니티" && (
+                <Description><img src={SmallSpeechBubble} width={12} height={11} className="speech" /> 10</Description>
+              )}
+            </CommentSection>
         </TitleSection>
         {type === "프로젝트" && (
         <>
@@ -94,6 +100,12 @@ const Description = styled.div`
     font-size: 13px;
     font-weight: 300;
     color: ${(props) => props.theme.colors.darkgrey};
+`
+
+const CommentSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 7px;
 `
 
 const Line = styled.div`
