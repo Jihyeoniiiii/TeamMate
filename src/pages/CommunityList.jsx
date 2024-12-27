@@ -3,21 +3,21 @@ import PostCard from "../components/PostCard";
 import ListHeader from "../components/ListHeader";
 import PageNavigator from "../components/PageNavigator";
 
-const ProjectData = {
-  state: "모집중",
-  title: "대학생을 위한 프로젝트 매칭 서비스",
-  description: "활동기간 | 24.11.18 ~ 24.12.24",
-  tag: "figma spring react"
+const CommunityData = {
+    state: "미해결",
+    title: "스케줄링, dag removed 원인 질문입니다.",
+    description: "iboyeon0816",
+    tag: "figma spring react"
 }
 
-const ProjectList = () => {
+const CommunityList = () => {
   return (
     <>
-      <ListHeader type="프로젝트" />
+      <ListHeader type="커뮤니티" />
       <Container>
         <GridWrapper>
           {Array.from({ length: 8 }, (_, index) => (
-            <PostCard key={index} data={ProjectData} type="프로젝트" />
+            <PostCard key={index} data={CommunityData} type="커뮤니티" />
           ))}
         </GridWrapper>
       </Container>
@@ -39,4 +39,4 @@ const GridWrapper = styled.div`
   width: fit-content;
 `;
 
-export default ProjectList;
+export default CommunityList;
