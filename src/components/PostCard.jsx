@@ -43,6 +43,7 @@ const CardWrapper = styled.div`
     border: 1px solid ${(props) => props.theme.colors.lightgrey};
     border-radius: 15px;
     overflow: hidden;
+    cursor: pointer;
 `
 
 const ImageWrapper = styled.div`
