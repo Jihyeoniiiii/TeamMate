@@ -1,26 +1,41 @@
 import styled from "styled-components"
 import SmallHeart from "../assets/icon/SmallHeart.svg"
-import DefaultImage from "../assets/images/default-image.jpeg"
+import DefaultImage from "../assets/images/default-image.jpg"
 import Heart from "../assets/icon/Heart.svg"
+import SmallSpeechBubble from "../assets/icon/SmallSpeechBubble.svg"
 
-const PostCard = () => {
+const PostCard = ({ data, type }) => {
   return (
     <CardWrapper>
         <ImageWrapper>
             <img src={DefaultImage} alt="Default" width={330} height={165} />
-            <RecruitLabel>모집중</RecruitLabel>
+            <StateLabel>{data.state}</StateLabel>   
             <HeartIcon src={Heart} alt="Heart" />
         </ImageWrapper>
         <TitleSection>
-            <Title>대학생을 위한 프로젝트 매칭 서비스</Title>
-            <Description>활동기간 | 24.11.18 ~ 24.12.24</Description>
-            <Description>figma react spring</Description>
-            <Description><img src={SmallHeart} width={12} height={12} /> 3</Description>
+            <Title>{data.title}</Title>
+            <DateUserSection>
+            { type === "커뮤니티" && (
+            <Description><img src={data.userImage} width={20} height={20} className="user-img" /></Description>
+          )}
+            <Description>{data.description}</Description>
+            </DateUserSection>
+            <Description>{data.tag}</Description>
+            <CommentSection>
+              <Description><img src={SmallHeart} width={12} height={12} /> 3</Description>
+              { type === "커뮤니티" && (
+                <Description><img src={SmallSpeechBubble} width={12} height={11}/> 10</Description>
+              )}
+            </CommentSection>
         </TitleSection>
-        <Line />
-        <RecruitSection>
+        {type === "프로젝트" && (
+        <>
+          <Line />
+          <RecruitSection>
             <Description>모집완료 0/3</Description>
-        </RecruitSection>
+          </RecruitSection>
+        </>
+      )}
     </CardWrapper>
   )
 }
@@ -29,10 +44,11 @@ const CardWrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 300px;
-    height: 320px;
+    height: auto;
     border: 1px solid ${(props) => props.theme.colors.lightgrey};
     border-radius: 15px;
     overflow: hidden;
+    cursor: pointer;
 `
 
 const ImageWrapper = styled.div`
@@ -41,7 +57,7 @@ const ImageWrapper = styled.div`
   height: 165px;
 `;
 
-const RecruitLabel = styled.div`
+const StateLabel = styled.div`
     position: absolute;
     top: 17px;
     left: 15px;
@@ -66,11 +82,23 @@ const HeartIcon = styled.img`
 
 const TitleSection = styled.div`
     width: 100%;
-    height: 120px;
+    height: auto;
     display: flex;
     flex-direction: column;
-    padding: 20px 20px 10px 20px;
+    padding: 20px;
     gap: 5px;
+`
+
+const DateUserSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  .user-img {
+    border: 1px solid ${(props) => props.theme.colors.lightgrey};
+    border-radius: 50%;
+    padding: 1px;
+  }
 `
 
 const RecruitSection = styled.div`
@@ -89,6 +117,12 @@ const Description = styled.div`
     font-size: 13px;
     font-weight: 300;
     color: ${(props) => props.theme.colors.darkgrey};
+`
+
+const CommentSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 7px;
 `
 
 const Line = styled.div`

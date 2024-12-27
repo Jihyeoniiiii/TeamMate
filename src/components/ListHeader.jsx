@@ -3,10 +3,12 @@ import Button from "./Button";
 import Search from "../assets/icon/Search.svg";
 import Dropdown from "../assets/icon/Dropdown.svg";
 
-const ListHeader = () => {
+const ListHeader = ({ type }) => {
   return (
     <Container>
-      <Title>전체 프로젝트</Title>
+      { type === "프로젝트" ? (
+        <>
+                <Title>전체 프로젝트</Title>
       <SearchContainer>
         <SearchField>
           <DropdownButton>
@@ -17,7 +19,7 @@ const ListHeader = () => {
             기술스택
             <img src={Dropdown} width={10} height={10} />
           </DropdownButton>
-          <SearchInput placeholder="검색어 입력"/>
+          <SearchInput placeholder="검색어"/>
           <CheckRecruitBox type="checkbox" />
           <CheckRecruitLabel>모집중</CheckRecruitLabel>
           <SearchIconWrapper>
@@ -26,6 +28,26 @@ const ListHeader = () => {
         </SearchField>
         <Button text="프로젝트 모집 글 작성하기" />
       </SearchContainer>
+        </>
+      ) : (
+        <>
+                <Title>전체 커뮤니티 게시글</Title>
+      <SearchContainer>
+        <SearchField>
+          <DropdownButton>
+            태그
+            <img src={Dropdown} width={10} height={10} />
+          </DropdownButton>
+          <SearchInput placeholder="검색어"/>
+          <SearchIconWrapper>
+            <img src={Search} alt="Search" width={18} height={18}/>
+          </SearchIconWrapper>
+        </SearchField>
+        <Button text="커뮤니티 게시글 작성하기" />
+      </SearchContainer>
+        </>
+      )
+    }
     </Container>
   );
 };
@@ -70,6 +92,7 @@ const DropdownButton = styled.button`
   border-radius: 3px;
   margin-right: 5px;
   min-width: 100px;
+  cursor: pointer;
 `;
 
 const SearchInput = styled.input`
@@ -103,6 +126,7 @@ const SearchIconWrapper = styled.div`
     align-items: center;
     padding: 15px;
     margin-top: 2px;
+    cursor: pointer;
 `
 
 export default ListHeader;
