@@ -4,11 +4,15 @@ const projectSlice = createSlice({
     name: 'project',
     initialState: {
         projectName: '',
+        startDate: '',
+        endDate: '',
+        deadLine: '',
         platform: '',
+        createdAt: '',
         image: null,
-        members: [],
+        platform_dto_list: [{ role: "", count: 1 }],
         description: '',
-        technologies: '',
+        technologies: [],
     },
     reducers: {
         setProjectData: (state, action) => {
@@ -16,22 +20,26 @@ const projectSlice = createSlice({
         },
         resetProject: (state) => {
             state.projectName = '';
+            state.startDate = '';
+            state.endDate = '';
+            state.deadLine = '';
+            state.createAt = '';
             state.platform = '';
             state.image = null;
-            state.members = [];
+            state.platform_dto_list = [{ role: "", count: 1 }];
             state.description = '';
-            state.technologies = '';
+            state.technologies = [];
         },
         
         addMember: (state, action) => {
-            state.members.push(action.payload);
+            state.platform_dto_list.push(action.payload);
         },
         updateMember: (state, action) => {
             const { index, member } = action.payload;
-            state.members[index] = member;
+            state.platform_dto_list[index] = member;
         },
         removeMember: (state, action) => {
-            state.members.splice(action.payload, 1);
+            state.platform_dto_list.splice(action.payload, 1);
         },
         
     },
