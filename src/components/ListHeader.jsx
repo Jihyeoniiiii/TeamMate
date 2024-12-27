@@ -3,29 +3,50 @@ import Button from "./Button";
 import Search from "../assets/icon/Search.svg";
 import Dropdown from "../assets/icon/Dropdown.svg";
 
-const ListHeader = () => {
+const ListHeader = ({ type }) => {
   return (
     <Container>
-      <Title>전체 프로젝트</Title>
-      <SearchContainer>
-        <SearchField>
-          <DropdownButton>
-            직군
-            <img src={Dropdown} width={10} height={10} />
-          </DropdownButton>
-          <DropdownButton>
-            기술스택
-            <img src={Dropdown} width={10} height={10} />
-          </DropdownButton>
-          <SearchInput placeholder="검색어 입력"/>
-          <CheckRecruitBox type="checkbox" />
-          <CheckRecruitLabel>모집중</CheckRecruitLabel>
-          <SearchIconWrapper>
-            <img src={Search} alt="Search" width={18} height={18}/>
-          </SearchIconWrapper>
-        </SearchField>
-        <Button text="프로젝트 모집 글 작성하기" />
-      </SearchContainer>
+      {type === "프로젝트" ? (
+        <>
+          <Title>전체 프로젝트</Title>
+          <SearchContainer>
+            <SearchField>
+              <DropdownButton>
+                직군
+                <img src={Dropdown} width={10} height={10} />
+              </DropdownButton>
+              <DropdownButton>
+                기술스택
+                <img src={Dropdown} width={10} height={10} />
+              </DropdownButton>
+              <SearchInput placeholder="검색어" />
+              <CheckRecruitBox type="checkbox" />
+              <CheckRecruitLabel>모집중</CheckRecruitLabel>
+              <SearchIconWrapper>
+                <img src={Search} alt="Search" width={18} height={18} />
+              </SearchIconWrapper>
+            </SearchField>
+            <Button text="프로젝트 모집 글 작성하기" />
+          </SearchContainer>
+        </>
+      ) : (
+        <>
+          <Title>전체 커뮤니티 게시글</Title>
+          <SearchContainer>
+            <SearchField>
+              <DropdownButton>
+                태그
+                <img src={Dropdown} width={10} height={10} />
+              </DropdownButton>
+              <SearchInput placeholder="검색어" />
+              <SearchIconWrapper>
+                <img src={Search} alt="Search" width={18} height={18} />
+              </SearchIconWrapper>
+            </SearchField>
+            <Button text="커뮤니티 게시글 작성하기" />
+          </SearchContainer>
+        </>
+      )}
     </Container>
   );
 };
@@ -83,26 +104,26 @@ const SearchInput = styled.input`
   ::placeholder {
     color: ${(props) => props.theme.colors.darkgrey};
   }
-`
+`;
 
 const CheckRecruitBox = styled.input`
-    margin: 8px;
-`
+  margin: 8px;
+`;
 
 const CheckRecruitLabel = styled.label`
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    color: ${(props) => props.theme.colors.darkgrey};
-    padding-top: 2px;
-`
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: ${(props) => props.theme.colors.darkgrey};
+  padding-top: 2px;
+`;
 
 const SearchIconWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 15px;
-    margin-top: 2px;
-`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  margin-top: 2px;
+`;
 
 export default ListHeader;
