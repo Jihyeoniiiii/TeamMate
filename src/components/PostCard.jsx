@@ -12,14 +12,19 @@ const PostCard = ({ data, type }) => {
             <StateLabel>{data.state}</StateLabel>   
             <HeartIcon src={Heart} alt="Heart" />
         </ImageWrapper>
-        <TitleSection type={type}>
+        <TitleSection>
             <Title>{data.title}</Title>
+            <DateUserSection>
+            { type === "커뮤니티" && (
+            <Description><img src={data.userImage} width={20} height={20} className="user-img" /></Description>
+          )}
             <Description>{data.description}</Description>
+            </DateUserSection>
             <Description>{data.tag}</Description>
             <CommentSection>
               <Description><img src={SmallHeart} width={12} height={12} /> 3</Description>
               { type === "커뮤니티" && (
-                <Description><img src={SmallSpeechBubble} width={12} height={11} className="speech" /> 10</Description>
+                <Description><img src={SmallSpeechBubble} width={12} height={11}/> 10</Description>
               )}
             </CommentSection>
         </TitleSection>
@@ -77,12 +82,23 @@ const HeartIcon = styled.img`
 
 const TitleSection = styled.div`
     width: 100%;
-    height: 120px;
+    height: auto;
     display: flex;
     flex-direction: column;
-    padding: 20px 20px 10px 20px;
+    padding: 20px;
     gap: 5px;
-    margin-bottom: ${(props) => (props.type === "커뮤니티" ? "20px" : "0px")};
+`
+
+const DateUserSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  .user-img {
+    border: 1px solid ${(props) => props.theme.colors.lightgrey};
+    border-radius: 50%;
+    padding: 1px;
+  }
 `
 
 const RecruitSection = styled.div`

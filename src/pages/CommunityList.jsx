@@ -6,6 +6,7 @@ import PageNavigator from "../components/PageNavigator";
 const CommunityData = {
     state: "미해결",
     title: "스케줄링, dag removed 원인 질문입니다.",
+    userImage: "src/assets/images/user.png",
     description: "iboyeon0816",
     tag: "figma spring react"
 }
