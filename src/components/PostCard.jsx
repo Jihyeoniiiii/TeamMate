@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import SmallHeart from "../assets/icon/SmallHeart.svg"
-import DefaultImage from "../assets/images/default-image.jpeg"
+import DefaultImage from "../assets/images/default-image.jpg"
 import Heart from "../assets/icon/Heart.svg"
 
 const PostCard = () => {
