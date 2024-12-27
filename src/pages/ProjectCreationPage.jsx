@@ -99,7 +99,6 @@ const ProjectCreationPage = () => {
 
   return (
     <>
-      <NavigationBar />
       <Container>
         <Title>프로젝트 모집 글 작성</Title>
         <br />

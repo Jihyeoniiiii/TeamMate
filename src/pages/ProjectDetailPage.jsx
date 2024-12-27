@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import NavigationBar from "../components/NavigationBar";
-import Button from "../components/Button";
 
 const mockProjectData = {
     id: 1,
@@ -44,7 +42,6 @@ const ProjectDetailPage = () => {
 
     return (
         <>
-            <NavigationBar />
             <Container>
                 <ImageSection>
                     <ProjectImage src={image} alt="Project Banner" />
@@ -117,8 +114,6 @@ const ProjectDetailPage = () => {
         </>
     );
 };
-
-// Styled Components
 
 const Container = styled.div`
   margin: 0 auto;
