@@ -1,8 +1,8 @@
 import styled from "styled-components"
 import SmallHeart from "../assets/icon/SmallHeart.svg"
 import DefaultImage from "../assets/images/default-image.jpg"
-import Heart from "../assets/icon/Heart.svg"
 import SmallSpeechBubble from "../assets/icon/SmallSpeechBubble.svg"
+import LikeButton from "./LikeButton"
 
 const PostCard = ({ data, type }) => {
   return (
@@ -10,7 +10,7 @@ const PostCard = ({ data, type }) => {
         <ImageWrapper>
             <img src={DefaultImage} alt="Default" width={330} height={165} />
             <StateLabel>{data.state}</StateLabel>   
-            <HeartIcon src={Heart} alt="Heart" />
+            <LikeButton />
         </ImageWrapper>
         <TitleSection>
             <Title>{data.title}</Title>
@@ -71,14 +71,6 @@ const StateLabel = styled.div`
     border-radius: 20px;
     font-size: 11px;
 `
-
-const HeartIcon = styled.img`
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 25px;
-  height: 25px;
-`;
 
 const TitleSection = styled.div`
     width: 100%;
