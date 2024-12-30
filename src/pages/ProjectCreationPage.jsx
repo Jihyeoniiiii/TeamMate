@@ -94,7 +94,7 @@ const ProjectCreationPage = () => {
       dispatch(addMember({ role: "", count: 1 })); // 기본 멤버 추가
     }
   }, [dispatch, projectState.platform_dto_list]);
-  
+
 
 
   return (
@@ -172,50 +172,48 @@ const ProjectCreationPage = () => {
 
 
         <Label>모집 인원
-  {(projectState.platform_dto_list || []).map((member, index) => (
-    <MemberWrapper key={index}>
-      <Input
-        type="text"
-        value={member.role}
-        onChange={(e) =>
-          dispatch(
-            updateMember({
-              index,
-              member: { ...member, role: e.target.value },
-            })
-          )
-        }
-        placeholder="역할 입력"
-        style={{
-          color: "black",
-        }}
-      />
-      <Input
-        type="number"
-        value={member.count}
-        onChange={(e) =>
-          handleMemberCountChange(index, parseInt(e.target.value) || 1)
-        }
-        placeholder="인원수"
-      />
-      <Button
-        text="삭제"
-        onClick={() => dispatch(removeMember(index))}
-        bgColor="white"
-        textColor={(props) => props.theme.colors.accent}
-      />
-    </MemberWrapper>
-  ))}
+          {(projectState.platform_dto_list || []).map((member, index) => (
+            <MemberWrapper key={index}>
+              <Input
+                type="text"
+                value={member.role}
+                onChange={(e) =>
+                  dispatch(
+                    updateMember({
+                      index,
+                      member: { ...member, role: e.target.value },
+                    })
+                  )
+                }
+                placeholder="역할 입력"
+                style={{
+                  color: "black",
+                }}
+              />
+              <Input
+                type="number"
+                value={member.count}
+                onChange={(e) =>
+                  handleMemberCountChange(index, parseInt(e.target.value) || 1)
+                }
+                placeholder="인원수"
+              />
+              <Button
+                text="삭제"
+                onClick={() => dispatch(removeMember(index))}
+                bgColor="white"
+                textColor={(props) => props.theme.colors.accent}
+              />
+            </MemberWrapper>
+          ))}
 
-  <ButtonWrapper>
-    <Button
-      text="역할 추가"
-      onClick={() => dispatch(addMember({ role: "", count: 1 }))}
-    />
-  </ButtonWrapper>
-</Label>
-
-
+          <ButtonWrapper>
+            <Button
+              text="역할 추가"
+              onClick={() => dispatch(addMember({ role: "", count: 1 }))}
+            />
+          </ButtonWrapper>
+        </Label>
 
         <Label>
           프로젝트 소개

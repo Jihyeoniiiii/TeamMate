@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import HeaderSection from "../components/HeaderSection"
 
 const mockProjectData = {
     id: 1,
@@ -48,12 +49,8 @@ const ProjectDetailPage = () => {
                 </ImageSection>
 
                 <ContentWrapper>
-                    <MainContent>
-                        <TitleWrapper>
-                            <StatusBox>모집중</StatusBox>
-                            <h1>{title}</h1>
-                        </TitleWrapper>
-                        <p>{createdAt} 작성</p>
+                <MainContent>
+                        <HeaderSection status="모집중" title={title} date={createdAt} />
                         <Description>{description}</Description>
                     </MainContent>
 
@@ -149,20 +146,6 @@ const MainContent = styled.div`
     font-size: 16px;
     margin-bottom: 20px;
   }
-`;
-
-const TitleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`;
-
-const StatusBox = styled.div`
-  background-color: ${(props) => props.theme.colors.primary};
-  color: white;
-  padding: 4px 8px;
-  border-radius: 20px;
-  font-size: 14px;
 `;
 
 const Description = styled.p`
