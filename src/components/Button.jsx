@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-const Button = ({ text, onClick, bgColor, textColor, borderColor }) => {
+const Button = ({ text, onClick, variant = "default", borderRadius }) => {
   return (
-    <Wrapper onClick={onClick} $bgColor={bgColor} $textColor={textColor} $borderColor={borderColor}>
+    <Wrapper onClick={onClick} $variant={variant} $borderRadius={borderRadius}>
       {text}
     </Wrapper>
   );
@@ -12,15 +12,28 @@ const Wrapper = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${(props) => props.$textColor || "white"}; // 기본값: white
-  background-color: ${(props) => props.$bgColor || props.theme.colors.accent}; // 기본값: theme.colors.accent
   width: 100%;
-  height: 40px;
-  padding: 20px 0;
-  border-radius: 10px;
-  border: 1px solid ${(props) => props.$borderColor || props.theme.colors.accent};
+  height: 35px;
+  border-radius: ${(props) => props.$borderRadius || "10px"};
   font-size: 15px;
   cursor: pointer;
+
+  background-color: ${(props) =>
+    props.$variant === "invert"
+      ? "white"
+      : props.theme.colors.accent};
+
+  color: ${(props) =>
+    props.$variant === "invert"
+      ? props.theme.colors.accent
+      : "white"};
+
+  border: 1px solid
+    ${(props) =>
+      props.$variant === "invert"
+      ? props.theme.colors.accent
+      : "white"};
 `;
+
 
 export default Button;
