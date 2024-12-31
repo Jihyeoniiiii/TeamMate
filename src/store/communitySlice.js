@@ -6,7 +6,7 @@ const communitySlice = createSlice({
         title: '',
         body: '',
         createdAt: '',
-        image: null,
+        images: [],
         tags: [],
     },
     reducers: {
@@ -17,7 +17,7 @@ const communitySlice = createSlice({
             state.title = '';
             state.body = '';
             state.createAt = '';
-            state.image = null;
+            state.images = [];
             state.tags = [];
         },
         

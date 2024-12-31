@@ -3,10 +3,11 @@ import HeaderSection from "../components/HeaderSection"
 import UserProfile from "../components/UserProfile"
 import InfoSideBox from "../components/InfoSideBox"
 import TagList from "../components/TagList"
+import LikeButton from "../components/LikeButton"
 
 const mockProjectData = {
   id: 1,
-  title: "AI 기반 프로젝트 협업 플랫폼",
+  title: "대학생을 위한 프로젝트 매칭 서비스",
   userImage: "src/assets/images/user.png",
   userName: "iboyeon0816",
   startDate: "2024-06-01",
@@ -48,6 +49,7 @@ const ProjectDetailPage = () => {
       <Container>
         <ImageSection>
           <ProjectImage src={image} alt="Project Banner" />
+          <LikeButton />
         </ImageSection>
 
         <ContentWrapper>
@@ -125,6 +127,7 @@ const Container = styled.div`
 
 const ImageSection = styled.div`
   width: 100%;
+  position: relative;
 `;
 
 const ProjectImage = styled.img`

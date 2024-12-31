@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Button from "../components/Button";
 import TagInput from "../components/TagInputContainer";
 import ImageUpload from "../components/ImageUpload";
-import GlobalStyles from "../styles/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setProjectData,
