@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Button from "../components/Button";
 import TagInput from "../components/TagInputContainer";
 import ImageUpload from "../components/ImageUpload";
+import GlobalStyles from "../styles/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setProjectData,
@@ -87,7 +88,7 @@ const ProjectCreationPage = () => {
 
   return (
     <>
-      <Container>
+       <div className="creationContainer"> 
         <Title>프로젝트 모집 글 작성</Title>
         <br />
         <Label>
@@ -225,7 +226,7 @@ const ProjectCreationPage = () => {
         <ButtonWrapper>
           <Button text="제출" onClick={handleSubmit} />
         </ButtonWrapper>
-      </Container>
+        </div>
     </>
   );
 };
@@ -247,12 +248,6 @@ const Title = styled.h1`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
-`;
-
-const Container = styled.div`
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
 `;
 
 const Input = styled.input`
