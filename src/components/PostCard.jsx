@@ -4,9 +4,9 @@ import DefaultImage from "../assets/images/default-image.jpg"
 import SmallSpeechBubble from "../assets/icon/SmallSpeechBubble.svg"
 import LikeButton from "./LikeButton"
 
-const PostCard = ({ data, type }) => {
+const PostCard = ({ data, type, onClick }) => {
   return (
-    <CardWrapper>
+    <CardWrapper onClick={onClick}>
         <ImageWrapper>
             <img src={DefaultImage} alt="Default" width={330} height={165} />
             <StateLabel>{data.state}</StateLabel>   

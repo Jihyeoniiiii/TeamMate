@@ -5,10 +5,12 @@ import ProjectDetailPage from  "./pages/ProjectDetailPage"
 import Layout from "./layout/Layout";
 import ProjectList from "./pages/ProjectList";
 import CommunityList from "./pages/CommunityList";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() { 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />

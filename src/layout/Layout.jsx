@@ -21,7 +21,7 @@ const Layout = () => {
 
   return (
     <>
-        <NavigationBar onClick={openModal}/>
+        <NavigationBar openModal={openModal}/>
         {isModalOpen && (
             <Modal type={type} setType={setType} onClose={closeModal} />
         )}
