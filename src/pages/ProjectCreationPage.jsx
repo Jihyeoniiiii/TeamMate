@@ -24,7 +24,6 @@ const roles = [
 ];
 
 const ProjectCreationPage = () => {
-
   const projectState = useSelector((state) => state.project);
   const dispatch = useDispatch();
   const [errors, setErrors] = useState({});
@@ -85,8 +84,6 @@ const ProjectCreationPage = () => {
       dispatch(addMember({ role: "", count: 1 })); // 기본 멤버 추가
     }
   }, [dispatch, projectState.platform_dto_list]);
-
-
 
   return (
     <>
@@ -215,7 +212,6 @@ const ProjectCreationPage = () => {
           {errors.technologies && <ErrorText>{errors.technologies}</ErrorText>}
         </Label>
 
-
         <Label>
           모집 마감일
           <Input
@@ -225,7 +221,6 @@ const ProjectCreationPage = () => {
           />
           {errors.deadLine && <ErrorText>{errors.deadLine}</ErrorText>}
         </Label>
-
 
         <ButtonWrapper>
           <Button text="제출" onClick={handleSubmit} />
@@ -246,7 +241,6 @@ const DateWrapper = styled.div`
   align-items: center;
   gap: 10px;
 `;
-
 
 const Title = styled.h1`
   text-align: center;
@@ -269,7 +263,6 @@ const Input = styled.input`
   padding: 10px;
   margin: 8px 0;
   font-size: 16px;
-
 `;
 
 const Select = styled.select`
@@ -296,19 +289,19 @@ const TextArea = styled.textarea`
   padding: 10px;
   margin: 8px 0;
   font-size: 16px;
-  resize: none;
+`;
+
+const ButtonWrapper = styled.div`
+  text-align: center;
+  margin-top: 20px;
 `;
 
 const MemberWrapper = styled.div`
   display: flex;
-  align-items: center;
+  align-items: center; 
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 `;
 
-const ButtonWrapper = styled.div`
-  margin-top: 20px;
-  text-align: center;
-`;
 
 export default ProjectCreationPage;
