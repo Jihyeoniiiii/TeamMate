@@ -2,8 +2,11 @@ import styled from "styled-components";
 import Button from "./Button";
 import Search from "../assets/icon/Search.svg";
 import Dropdown from "../assets/icon/Dropdown.svg";
+import { useNavigate } from "react-router-dom";
 
 const ListHeader = ({ type }) => {
+  const nav = useNavigate();
+
   return (
     <Container>
       { type === "프로젝트" ? (
@@ -26,7 +29,7 @@ const ListHeader = ({ type }) => {
             <img src={Search} alt="Search" width={18} height={18}/>
           </SearchIconWrapper>
         </SearchField>
-        <Button text="프로젝트 모집 글 작성하기" />
+        <Button text="프로젝트 모집 글 작성하기" onClick={() => nav('/project-creation')}/>
       </SearchContainer>
         </>
       ) : (
@@ -43,7 +46,7 @@ const ListHeader = ({ type }) => {
             <img src={Search} alt="Search" width={18} height={18}/>
           </SearchIconWrapper>
         </SearchField>
-        <Button text="커뮤니티 게시글 작성하기" />
+        <Button text="커뮤니티 게시글 작성하기" onClick={() => nav('/community-creation')}/>
       </SearchContainer>
         </>
       )

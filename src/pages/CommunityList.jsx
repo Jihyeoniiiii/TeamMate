@@ -2,23 +2,19 @@ import styled from "styled-components";
 import PostCard from "../components/PostCard";
 import ListHeader from "../components/ListHeader";
 import PageNavigator from "../components/PageNavigator";
-
-const CommunityData = {
-    state: "미해결",
-    title: "스케줄링, dag removed 원인 질문입니다.",
-    userImage: "src/assets/images/user.png",
-    description: "iboyeon0816",
-    tag: "figma spring react"
-}
+import { useNavigate } from "react-router-dom";
+import { CommunityData } from "../data/PostData";
 
 const CommunityList = () => {
+  const nav = useNavigate();
+
   return (
     <>
       <ListHeader type="커뮤니티" />
       <Container>
         <GridWrapper>
           {Array.from({ length: 8 }, (_, index) => (
-            <PostCard key={index} data={CommunityData} type="커뮤니티" />
+            <PostCard key={index} data={CommunityData} type="커뮤니티" onClick={() => nav('/community-detail')}/>
           ))}
         </GridWrapper>
       </Container>

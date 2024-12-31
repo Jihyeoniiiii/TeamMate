@@ -2,32 +2,48 @@ import styled from "styled-components";
 import MoreListTitle from "../components/MoreListTitle";
 import PostCard from "./PostCard";
 import Button from "./Button";
+import { useNavigate } from "react-router-dom";
 
-const MoreList = ({ data, type }) => {
+const MoreList = ({ data, type, onClick }) => {
+  const nav = useNavigate();
+
+  const navigationTo = () => {
+    if(type === "프로젝트") {
+      nav('/project')
+    } else {
+      nav('/community')
+    }
+  }
+
   return (
     <Wrapper>
       <MoreListTitle type={type} />
       <CardContainer>
         <GridWrapper>
           {Array.from({ length: 4 }, (_, index) => (
-            <PostCard key={index} data={data} type={type} />
+            <PostCard key={index} data={data} type={type} onClick={onClick}/>
           ))}
         </GridWrapper>
       </CardContainer>
       <ButtonContainer>
-        <Button text="더보기" variant="invert" borderRadius="50px" />
+        <Button
+          text="더보기"
+          variant="invert"
+          borderRadius="50px"
+          onClick={() => navigationTo()}
+        />
       </ButtonContainer>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 35px;
-`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 35px;
+`;
 
 const CardContainer = styled.div`
   display: flex;

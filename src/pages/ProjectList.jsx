@@ -2,22 +2,19 @@ import styled from "styled-components";
 import PostCard from "../components/PostCard";
 import ListHeader from "../components/ListHeader";
 import PageNavigator from "../components/PageNavigator";
-
-const ProjectData = {
-  state: "모집중",
-  title: "대학생을 위한 프로젝트 매칭 서비스",
-  description: "활동기간 | 24.11.18 ~ 24.12.24",
-  tag: "figma spring react"
-}
+import { useNavigate } from "react-router-dom";
+import { ProjectData } from "../data/PostData";
 
 const ProjectList = () => {
+  const nav = useNavigate();
+
   return (
     <>
       <ListHeader type="프로젝트" />
       <Container>
         <GridWrapper>
           {Array.from({ length: 8 }, (_, index) => (
-            <PostCard key={index} data={ProjectData} type="프로젝트" />
+            <PostCard key={index} data={ProjectData} type="프로젝트" onClick={() => nav('/project-detail')}/>
           ))}
         </GridWrapper>
       </Container>
