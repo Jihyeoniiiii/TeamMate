@@ -3,6 +3,8 @@ import Button from "./Button";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { setAuthData } from "../store/authSlice";
+import { submitLogin } from "../api/auth";
+import { processError } from "../utils/errorHandler";
 
 const Login = () => {
   const { email, password } = useSelector((state) => state.auth);
@@ -17,9 +19,26 @@ const Login = () => {
     setFormData((prev) => ({...prev, [name]: value}));
   }
 
-  const handleSubmit = () => {
-    console.log(email, password); // 아이디, 패스워드 백엔드로 보내줌
+  const handleSubmit = async () => {
+    if(!email || !password) {
+      alert("모든 입력값을 채워주세요!");
+      return;
+    }
+
     dispatch(setAuthData({ email, password}));
+
+    try {
+      const data = submitLogin({email, password});
+      console.log("로그인 성공");
+
+      const accessToken = data.result.access_token;
+      sessionStorage.setItem("access_token", accessToken);
+
+      const refreshToken = data.result.refresh_token;
+      localStorage.setItem("refresh_token", refreshToken);
+    } catch (error) {
+      processError(error);
+    }
   }
 
   return (
