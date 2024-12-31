@@ -1,8 +1,8 @@
 import { handleApiError } from "./handleApiError";
 
 export const processError = (error) => {
-  if (error.domain && error.code) {
-    const errorMessage = handleApiError(error.domain, error.code);
+  if (error.status && error.code) {
+    const errorMessage = handleApiError(error.status, error.code);
     alert(errorMessage);
   } else {
     console.error("네트워크 오류:", error);
