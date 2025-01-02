@@ -1,13 +1,25 @@
 import styled from "styled-components";
+import SmallHeart from "../assets/icon/SmallHeart.svg";
+import SmallSpeechBubble from "../assets/icon/SmallSpeechBubble.svg";
 
-const HeaderSection = ({ status, title, date }) => {
+const HeaderSection = ({ status, title, date, type }) => {
     return (
         <TitleWrapper>
             <StatusAndTitle>
                 <StatusBox>{status}</StatusBox>
                 <h1>{title}</h1>
             </StatusAndTitle>
-            <DateText>{date} 작성</DateText>
+            <InfoRow>
+                <DateText>{date} 작성</DateText>
+                <IconText>
+                    <img src={SmallHeart} width={12} height={12} alt="Heart" /> 3
+                </IconText>
+                {type === "커뮤니티" && (
+                    <IconText>
+                        <img src={SmallSpeechBubble} width={12} height={11} alt="Comment" /> 10
+                    </IconText>
+                )}
+            </InfoRow>
         </TitleWrapper>
     );
 };
@@ -37,11 +49,23 @@ const StatusBox = styled.div`
   transform: translateY(-6px); /* 텍스트를 위로 이동 */
 `;
 
-
-const DateText = styled.p`
+const InfoRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px; 
   font-size: 14px;
   color: gray;
-  margin: 0;
+`;
+
+const DateText = styled.span`
+  font-size: 14px;
+  color: gray;
+`;
+
+const IconText = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 5px; 
 `;
 
 export default HeaderSection;
