@@ -3,7 +3,7 @@ import HeaderSection from "../components/HeaderSection";
 import UserProfile from "../components/UserProfile";
 import InfoSideBox from "../components/InfoSideBox";
 import TagList from "../components/TagList";
-import LikeButton from "../components/LikeButton";
+import SaveButton from "../components/SaveButton";
 
 const mockCommunityData = {
   id: 1,
@@ -19,6 +19,10 @@ const mockCommunityData = {
     "src/assets/images/image3.png",
   ],
   tags: ["React", "Node.js", "TensorFlow"],
+  comments: [
+    { id: 1, userImg: "src/assets/images/user.png", userName: "john_doe", text: "좋은 질문이네요!" },
+    { id: 2, userImg: "src/assets/images/user.png", userName: "jane_smith", text: "이 문제에 대해 저도 고민 중입니다." },
+  ],
 };
 
 const CommunityDetailPage = () => {
@@ -30,6 +34,7 @@ const CommunityDetailPage = () => {
     createdAt,
     images,
     tags,
+    comments
   } = mockCommunityData;
 
   return (
@@ -37,7 +42,7 @@ const CommunityDetailPage = () => {
       <Container>
         <ContentWrapper>
           <MainContent>
-            <HeaderSection status="미해결" title={title} date={createdAt} />
+            <HeaderSection status="미해결" title={title} date={createdAt} type="커뮤니티" />
             <Description>{body}</Description>
 
             <ImagesWrapper>
@@ -45,6 +50,30 @@ const CommunityDetailPage = () => {
                 <Image key={index} src={image} alt={`image-${index}`} />
               ))}
             </ImagesWrapper>
+            <ButtonWrapper>
+              <SaveButton />
+            </ButtonWrapper>
+
+            <Divider />
+
+            <CommentsSection>
+              <CommentsTitle>
+                답변 <span>{comments.length}</span>
+              </CommentsTitle>
+              {comments.map((comment) => (
+                <Comment key={comment.id}>
+                  <UserProfile
+                    userImg={comment.userImg}
+                    description={comment.userName}
+                    textColor="#333"
+                    fontSize="14px"
+                    fontWeight="500"
+                  />
+                  <CommentText>{comment.text}</CommentText>
+                </Comment>
+              ))}
+            </CommentsSection>
+
           </MainContent>
 
           <SideContent>
@@ -75,7 +104,7 @@ const CommunityDetailPage = () => {
 
 const Container = styled.div`
   margin: 0 auto;
-  padding: 20px;
+  padding: 5px 30px;
 `;
 
 const ContentWrapper = styled.div`
@@ -143,5 +172,40 @@ const Divider = styled.div`
   background-color: #ddd;
   margin: 10px 0;
 `;
+
+const CommentsSection = styled.div`
+  margin-top: 20px;
+`;
+
+const CommentsTitle = styled.h3`
+  font-size: 18px;
+  margin-bottom: 15px;
+
+  span {
+    color: ${(props) => props.theme.colors.primary}; 
+    font-weight: bold;
+  }
+`;
+
+const Comment = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+
+`;
+
+const CommentText = styled.p`
+  font-size: 14px;
+  margin: 5px 0 0 40px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  margin-top: 20px; /* 사진 아래에 적절한 간격 추가 */
+`;
+
+
 
 export default CommunityDetailPage;
