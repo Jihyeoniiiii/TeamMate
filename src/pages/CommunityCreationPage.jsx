@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import Button from "../components/Button";
 import TagInput from "../components/TagInputContainer";

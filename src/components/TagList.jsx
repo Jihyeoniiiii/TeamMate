@@ -17,11 +17,11 @@ const Wrapper = styled.div`
 `;
 
 const Item = styled.div`
-  background-color: #f0f0f0;
+  background-color: ${(props) => props.theme.colors.primary};
   padding: 4px 8px;
-  border-radius: 5px;
+  border-radius: 3px;
   font-size: 12px;
-  color: #333;
+  color: white;
 `;
 
 export default TagList;
