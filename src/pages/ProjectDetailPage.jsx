@@ -4,6 +4,8 @@ import UserProfile from "../components/UserProfile"
 import InfoSideBox from "../components/InfoSideBox"
 import TagList from "../components/TagList"
 import LikeButton from "../components/LikeButton"
+import Button from "../components/Button";
+
 
 const mockProjectData = {
   id: 1,
@@ -72,14 +74,12 @@ const ProjectDetailPage = () => {
 
               </Section>
               <Divider />
-
               <Section>
                 <h3>프로젝트 정보</h3>
                 <p>모집 기간: {deadline}</p>
                 <p>프로젝트 기간: {startDate} ~ {endDate}</p>
               </Section>
               <Divider />
-
               <Section>
                 <h3>모집 현황</h3>
                 {platform_dto_list.map((item, index) => (
@@ -89,12 +89,11 @@ const ProjectDetailPage = () => {
                     </span>
                     {item.current < item.total ? (
                       <ButtonWrapper>
-                        <MiniButton>지원</MiniButton>
+                        <Button text="지원" size="small" />
                       </ButtonWrapper>
                     ) : (
                       <ButtonWrapper>
-                        <MiniButton $bgColor="#CCC" $borderColor="#CCC">마감</MiniButton>
-
+                        <Button text="마감" size="small" variant="invert" />
                       </ButtonWrapper>
                     )}
                   </RecruitItem>
@@ -199,11 +198,11 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 50px;
 `;
 
 const MiniButton = styled.button`
   padding: 3px 10px;
-  font-size: 12px;
   border-radius: 5px;
   background-color: ${({ $bgColor, theme }) => $bgColor || theme.colors.accent};
   border: 1px solid ${({ $borderColor, theme }) => $borderColor || theme.colors.accent};
