@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Button from "../components/Button";
 
 const mockProjectData = {
     id: 1,
@@ -81,11 +82,11 @@ const ProjectDetailPage = () => {
                                         </span>
                                         {item.current < item.total ? (
                                             <ButtonWrapper>
-                                                <MiniButton>지원</MiniButton>
+                                                <Button text="지원" size="small" />
                                             </ButtonWrapper>
                                         ) : (
                                             <ButtonWrapper>
-                                                <MiniButton bgColor="#CCC" borderColor="#CCC">마감</MiniButton>
+                                                <Button text="마감" size="small" variant="invert" />
                                             </ButtonWrapper>
                                         )}
                                     </RecruitItem>
@@ -214,10 +215,10 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 50px;
 `;
 const MiniButton = styled.button`
   padding: 3px 10px;
-  font-size: 12px;
   border-radius: 5px;
   background-color: ${({ bgColor, theme }) => bgColor || theme.colors.accent};
   border: 1px solid ${({ borderColor, theme }) => borderColor || theme.colors.accent};
