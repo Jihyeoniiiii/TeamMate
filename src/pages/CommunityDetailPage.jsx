@@ -1,14 +1,16 @@
 import styled from "styled-components";
+import React, { useState } from "react";
 import HeaderSection from "../components/HeaderSection";
 import UserProfile from "../components/UserProfile";
 import InfoSideBox from "../components/InfoSideBox";
 import TagList from "../components/TagList";
+import Button from "../components/Button"
 import SaveButton from "../components/SaveButton";
 
 const mockCommunityData = {
   id: 1,
   title: "스케줄링, dag removed 원인 질문입니다.",
-  userImage: "src/assets/images/user.png",
+  userImg: "src/assets/images/user.png",
   userName: "iboyeon0816",
   createdAt: "2024-05-20",
   body:
@@ -25,11 +27,29 @@ const mockCommunityData = {
   ],
 };
 
+
 const CommunityDetailPage = () => {
+  const [newComment, setNewComment] = useState(""); // 댓글 입력 상태
+
+  const handleCommentSubmit = () => {
+    if (!newComment.trim()) {
+      alert("댓글을 입력하세요.");
+      return;
+    }
+
+    console.log("새 댓글:", {
+      id: 1,
+      text: newComment, // 입력된 댓글 내용
+    });
+
+    setNewComment("");
+    alert("댓글이 추가되었습니다!");
+  };
+
   const {
     title,
     body,
-    userImage,
+    userImg,
     userName,
     createdAt,
     images,
@@ -59,6 +79,23 @@ const CommunityDetailPage = () => {
             <CommentsSection>
               <CommentsTitle>
                 답변 <span>{comments.length}</span>
+              <CommentWrite>
+              <Input 
+              type = "text"
+              placeholder="댓글을 입력하세요.."
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              />
+              <SubmitButtonWrapper>
+                <Button
+                    text="작성"
+                    size="small"
+                    borderRadius="5px"
+                    variant="invert"
+                    onClick={handleCommentSubmit}
+                  />
+              </SubmitButtonWrapper>
+              </CommentWrite>
               </CommentsTitle>
               {comments.map((comment) => (
                 <Comment key={comment.id}>
@@ -81,7 +118,7 @@ const CommunityDetailPage = () => {
               <Section>
                 <h3>질문자</h3>
                 <UserProfile
-                  userImg={userImage}
+                  userImg={userImg}
                   description={userName}
                   textColor="#333"
                   fontSize="16px"
@@ -187,23 +224,43 @@ const CommentsTitle = styled.h3`
   }
 `;
 
+const CommentWrite = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-bottom:20px;
+  margin-top: 20px;
+`;
+
+const Input = styled.input`
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+`;
+const SubmitButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px; 
+`;
+
 const Comment = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 15px;
-  padding-bottom: 15px;
-
+  margin-bottom: 5px;
+  padding-bottom: 5px;
 `;
 
 const CommentText = styled.p`
   font-size: 14px;
-  margin: 5px 0 0 40px;
+  margin: 10px 0 0 30px;
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
-  justify-content: flex-start; /* 왼쪽 정렬 */
-  margin-top: 20px; /* 사진 아래에 적절한 간격 추가 */
+  justify-content: flex-start; 
+  margin-top: 20px; 
 `;
 
 
