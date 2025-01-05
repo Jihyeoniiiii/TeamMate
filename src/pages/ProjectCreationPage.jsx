@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "../components/Button";
 import TagInput from "../components/TagInputContainer";
-import NavigationBar from "../components/NavigationBar";
+import ImageUpload from "../components/ImageUpload";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setProjectData,
@@ -24,7 +24,6 @@ const roles = [
 ];
 
 const ProjectCreationPage = () => {
-
   const projectState = useSelector((state) => state.project);
   const dispatch = useDispatch();
   const [errors, setErrors] = useState({});
@@ -39,17 +38,8 @@ const ProjectCreationPage = () => {
     dispatch(setProjectData({ ...projectState, [field]: value }));
   };
 
-  // 이미지 업로드 핸들러
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-        handleInputChange("image", reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
+  const handleImageChange = (newImage) => {
+    handleInputChange("image", newImage);
   };
 
   // 멤버 인원수 변경 핸들러
@@ -94,12 +84,10 @@ const ProjectCreationPage = () => {
       dispatch(addMember({ role: "", count: 1 })); // 기본 멤버 추가
     }
   }, [dispatch, projectState.platform_dto_list]);
-  
-
 
   return (
     <>
-      <Container>
+       <div className="creationContainer"> 
         <Title>프로젝트 모집 글 작성</Title>
         <br />
         <Label>
@@ -150,72 +138,56 @@ const ProjectCreationPage = () => {
 
         <Label>
           대표 이미지
-          <ImageWrapper>
-            <ImagePreview
-              src={imagePreview || "src/assets/icon/defaultImg.png"}
-              alt="미리보기"
-            />
-            <UploadButton>
-              <button>
-                <label htmlFor="image-upload">이미지 업로드</label>
-              </button>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                id="image-upload"
-              />
-            </UploadButton>
-          </ImageWrapper>
+          <ImageUpload
+            initialImage={projectState.image}
+            onImageChange={handleImageChange}
+          />
           {errors.image && <ErrorText>{errors.image}</ErrorText>}
         </Label>
 
-
         <Label>모집 인원
-  {(projectState.platform_dto_list || []).map((member, index) => (
-    <MemberWrapper key={index}>
-      <Input
-        type="text"
-        value={member.role}
-        onChange={(e) =>
-          dispatch(
-            updateMember({
-              index,
-              member: { ...member, role: e.target.value },
-            })
-          )
-        }
-        placeholder="역할 입력"
-        style={{
-          color: "black",
-        }}
-      />
-      <Input
-        type="number"
-        value={member.count}
-        onChange={(e) =>
-          handleMemberCountChange(index, parseInt(e.target.value) || 1)
-        }
-        placeholder="인원수"
-      />
-      <Button
-        text="삭제"
-        onClick={() => dispatch(removeMember(index))}
-        bgColor="white"
-        textColor={(props) => props.theme.colors.accent}
-      />
-    </MemberWrapper>
-  ))}
+          {(projectState.platform_dto_list || []).map((member, index) => (
+            <MemberWrapper key={index}>
+              <Input
+                type="text"
+                value={member.role}
+                onChange={(e) =>
+                  dispatch(
+                    updateMember({
+                      index,
+                      member: { ...member, role: e.target.value },
+                    })
+                  )
+                }
+                placeholder="역할 입력"
+                style={{
+                  color: "black",
+                }}
+              />
+              <Input
+                type="number"
+                value={member.count}
+                onChange={(e) =>
+                  handleMemberCountChange(index, parseInt(e.target.value) || 1)
+                }
+                placeholder="인원수"
+              />
+              <Button
+                text="삭제"
+                onClick={() => dispatch(removeMember(index))}
+                bgColor="white"
+                textColor={(props) => props.theme.colors.accent}
+              />
+            </MemberWrapper>
+          ))}
 
-  <ButtonWrapper>
-    <Button
-      text="역할 추가"
-      onClick={() => dispatch(addMember({ role: "", count: 1 }))}
-    />
-  </ButtonWrapper>
-</Label>
-
-
+          <ButtonWrapper>
+            <Button
+              text="역할 추가"
+              onClick={() => dispatch(addMember({ role: "", count: 1 }))}
+            />
+          </ButtonWrapper>
+        </Label>
 
         <Label>
           프로젝트 소개
@@ -240,7 +212,6 @@ const ProjectCreationPage = () => {
           {errors.technologies && <ErrorText>{errors.technologies}</ErrorText>}
         </Label>
 
-
         <Label>
           모집 마감일
           <Input
@@ -251,11 +222,10 @@ const ProjectCreationPage = () => {
           {errors.deadLine && <ErrorText>{errors.deadLine}</ErrorText>}
         </Label>
 
-
         <ButtonWrapper>
           <Button text="제출" onClick={handleSubmit} />
         </ButtonWrapper>
-      </Container>
+        </div>
     </>
   );
 };
@@ -272,18 +242,11 @@ const DateWrapper = styled.div`
   gap: 10px;
 `;
 
-
 const Title = styled.h1`
   text-align: center;
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
-`;
-
-const Container = styled.div`
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
 `;
 
 const Input = styled.input`
@@ -294,7 +257,6 @@ const Input = styled.input`
   padding: 10px;
   margin: 8px 0;
   font-size: 16px;
-
 `;
 
 const Select = styled.select`
@@ -321,52 +283,19 @@ const TextArea = styled.textarea`
   padding: 10px;
   margin: 8px 0;
   font-size: 16px;
-  resize: none;
+`;
+
+const ButtonWrapper = styled.div`
+  text-align: center;
+  margin-top: 20px;
 `;
 
 const MemberWrapper = styled.div`
   display: flex;
-  align-items: center;
+  align-items: center; 
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 `;
 
-const ImageWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const ImagePreview = styled.img`
-  width: 300px;
-  height: 190px;
-  margin: 8px 0;
-  border-radius: 10px;
-  object-fit: cover;
-  background-color: lightgray; 
-`;
-
-const UploadButton = styled.div`
-  margin-left: 20px;
-
-  button {
-    cursor: pointer;
-    background-color: white;
-    color: ${(props) => props.theme.colors.accent};
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    border: 1px solid ${(props) => props.theme.colors.accent};
-  }
-
-  input[type="file"] {
-    display: none;
-  }
-`;
-
-
-const ButtonWrapper = styled.div`
-  margin-top: 20px;
-  text-align: center;
-`;
 
 export default ProjectCreationPage;

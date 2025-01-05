@@ -16,7 +16,7 @@ const projectSlice = createSlice({
     },
     reducers: {
         setProjectData: (state, action) => {
-            Object.assign(state, action.payload); 
+            Object.assign(state, action.payload);
         },
         resetProject: (state) => {
             state.projectName = '';
@@ -30,7 +30,7 @@ const projectSlice = createSlice({
             state.description = '';
             state.technologies = [];
         },
-        
+
         addMember: (state, action) => {
             state.platform_dto_list.push(action.payload);
         },
@@ -41,21 +41,16 @@ const projectSlice = createSlice({
         removeMember: (state, action) => {
             state.platform_dto_list.splice(action.payload, 1);
         },
-        
+
     },
 });
 
 export const {
     setProjectData,
     resetProject,
-    setProjectName,
-    setPlatform,
-    setImage,
     addMember,
     updateMember,
     removeMember,
-    setDescription,
-    setTechnologies,
 } = projectSlice.actions;
 
 export default projectSlice.reducer;
