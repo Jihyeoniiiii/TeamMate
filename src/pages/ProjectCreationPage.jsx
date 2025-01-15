@@ -11,6 +11,7 @@ import {
   updateMember,
   removeMember,
 } from "../store/projectSlice";
+import { createProject } from "../api/project";
 
 const roles = [
   { id: 1, name: "기획" },
@@ -33,9 +34,21 @@ const ProjectCreationPage = () => {
   );
   const [imagePreview, setImagePreview] = useState(projectState.image); // 이미지 미리보기 상태
 
+  const [formData, setFormData] = useState({
+    projectName: "",
+    startDate: "",
+    endDate: "",
+    deadLine: "",
+    platform: "",
+    image: null,
+    platform_dto_list: [{ role: "", count: 1 }],
+    description: "",
+    technologies: [],
+  });
+
   // 입력 핸들러 (한 번에 모든 필드 업데이트 가능)
   const handleInputChange = (field, value) => {
-    dispatch(setProjectData({ ...projectState, [field]: value }));
+    setFormData({ ...formData, [field]: value });
   };
 
   const handleImageChange = (newImage) => {
@@ -56,21 +69,28 @@ const ProjectCreationPage = () => {
 
   const validateFields = () => {
     const newErrors = {};
-    if (!projectState.projectName) newErrors.projectName = "프로젝트명을 입력해주세요.";
-    if (!projectState.startDate || !projectState.endDate) newErrors.projectDate = "프로젝트 시작 날짜를 선택해주세요.";
-    if (!projectState.image) newErrors.image = "대표 이미지를 업로드해주세요.";
-    if (!projectState.description) newErrors.description = "프로젝트 소개를 작성해주세요.";
-    if (!projectState.deadLine) newErrors.deadLine = "모집 마감일을 선택해주세요.";
-    if (!technologies.length) newErrors.technologies = "기술/언어를 최소 하나 입력해주세요.";
+    if (!formData.projectName)
+      newErrors.projectName = "프로젝트명을 입력해주세요.";
+    if (!formData.startDate || !formData.endDate)
+      newErrors.projectDate = "프로젝트 시작 날짜를 선택해주세요.";
+    if (!formData.image) newErrors.image = "대표 이미지를 업로드해주세요.";
+    if (!formData.description)
+      newErrors.description = "프로젝트 소개를 작성해주세요.";
+    if (!formData.deadLine)
+      newErrors.deadLine = "모집 마감일을 선택해주세요.";
+    if (!technologies.length)
+      newErrors.technologies = "기술/언어를 최소 하나 입력해주세요.";
     setErrors(newErrors);
 
     // 에러가 없으면 true 반환
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validateFields()) {
+      dispatch(setProjectData(formData));
       console.log(projectState);
+      await createProject();
       dispatch(resetProject());
       setImagePreview("");
       alert("프로젝트가 성공적으로 제출되었습니다.");
@@ -80,21 +100,24 @@ const ProjectCreationPage = () => {
   };
 
   useEffect(() => {
-    if (!projectState.platform_dto_list || projectState.platform_dto_list.length === 0) {
+    if (
+      !projectState.platform_dto_list ||
+      projectState.platform_dto_list.length === 0
+    ) {
       dispatch(addMember({ role: "", count: 1 })); // 기본 멤버 추가
     }
   }, [dispatch, projectState.platform_dto_list]);
 
   return (
     <>
-       <div className="creationContainer"> 
+      <div className="creationContainer">
         <Title>프로젝트 모집 글 작성</Title>
         <br />
         <Label>
           프로젝트명
           <Input
             type="text"
-            value={projectState.projectName}
+            value={formData.projectName}
             onChange={(e) => handleInputChange("projectName", e.target.value)}
             placeholder="프로젝트명"
           />
@@ -106,13 +129,13 @@ const ProjectCreationPage = () => {
           <DateWrapper>
             <Input
               type="date"
-              value={projectState.startDate}
+              value={formData.startDate}
               onChange={(e) => handleInputChange("startDate", e.target.value)}
             />
             ~
             <Input
               type="date"
-              value={projectState.endDate}
+              value={formData.endDate}
               onChange={(e) => handleInputChange("endDate", e.target.value)}
             />
           </DateWrapper>
@@ -122,7 +145,7 @@ const ProjectCreationPage = () => {
         <Label>
           출시 플랫폼
           <Select
-            value={projectState.platform_id_list}
+            value={formData.platform_id_list}
             onChange={(e) => handleInputChange("platform", e.target.value)}
           >
             <option value="" disabled>
@@ -139,13 +162,14 @@ const ProjectCreationPage = () => {
         <Label>
           대표 이미지
           <ImageUpload
-            initialImage={projectState.image}
+            initialImage={formData.image}
             onImageChange={handleImageChange}
           />
           {errors.image && <ErrorText>{errors.image}</ErrorText>}
         </Label>
 
-        <Label>모집 인원
+        <Label>
+          모집 인원
           {(projectState.platform_dto_list || []).map((member, index) => (
             <MemberWrapper key={index}>
               <Input
@@ -180,7 +204,6 @@ const ProjectCreationPage = () => {
               />
             </MemberWrapper>
           ))}
-
           <ButtonWrapper>
             <Button
               text="역할 추가"
@@ -192,7 +215,7 @@ const ProjectCreationPage = () => {
         <Label>
           프로젝트 소개
           <TextArea
-            value={projectState.description}
+            value={formData.description}
             onChange={(e) => handleInputChange("description", e.target.value)}
             placeholder="프로젝트 소개"
           />
@@ -202,10 +225,10 @@ const ProjectCreationPage = () => {
         <Label>
           기술/언어
           <TagInput
-            tags={technologies}  // 배열로 전달
+            tags={technologies} // 배열로 전달
             setTags={(tags) => {
-              setTechnologies(tags);  // 내부 상태 업데이트
-              handleInputChange("technologies", tags);  // 배열을 그대로 전달
+              setTechnologies(tags); // 내부 상태 업데이트
+              handleInputChange("technologies", tags); // 배열을 그대로 전달
             }}
             placeholder="사용 기술/언어 입력 후 Enter"
           />
@@ -216,7 +239,7 @@ const ProjectCreationPage = () => {
           모집 마감일
           <Input
             type="date"
-            value={projectState.deadLine}
+            value={formData.deadLine}
             onChange={(e) => handleInputChange("deadLine", e.target.value)}
           />
           {errors.deadLine && <ErrorText>{errors.deadLine}</ErrorText>}
@@ -225,7 +248,7 @@ const ProjectCreationPage = () => {
         <ButtonWrapper>
           <Button text="제출" onClick={handleSubmit} />
         </ButtonWrapper>
-        </div>
+      </div>
     </>
   );
 };
@@ -292,10 +315,9 @@ const ButtonWrapper = styled.div`
 
 const MemberWrapper = styled.div`
   display: flex;
-  align-items: center; 
+  align-items: center;
   gap: 10px;
   margin-bottom: 15px;
 `;
-
 
 export default ProjectCreationPage;
