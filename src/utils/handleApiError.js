@@ -56,7 +56,11 @@ export const handleApiError = (status, code) => {
       POS4001: {
         codeName: "POSITION_NOT_FOUND",
         message: "포지션 정보를 찾을 수 없습니다.",
-      }
+      },
+      PRO4001: {
+        codeName: "PROJECT_NOT_FOUND",
+        message: "프로젝트 정보를 찾을 수 없습니다.",
+      },
     },
     409: {
       UNIV4001: {

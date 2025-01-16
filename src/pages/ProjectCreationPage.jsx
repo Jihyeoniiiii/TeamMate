@@ -12,6 +12,7 @@ import {
   removeMember,
 } from "../store/projectSlice";
 import { createProject } from "../api/project";
+import { processError } from "../utils/errorHandler";
 
 const roles = [
   { id: 1, name: "기획" },
@@ -76,8 +77,7 @@ const ProjectCreationPage = () => {
     if (!formData.image) newErrors.image = "대표 이미지를 업로드해주세요.";
     if (!formData.description)
       newErrors.description = "프로젝트 소개를 작성해주세요.";
-    if (!formData.deadLine)
-      newErrors.deadLine = "모집 마감일을 선택해주세요.";
+    if (!formData.deadLine) newErrors.deadLine = "모집 마감일을 선택해주세요.";
     if (!technologies.length)
       newErrors.technologies = "기술/언어를 최소 하나 입력해주세요.";
     setErrors(newErrors);
@@ -87,15 +87,18 @@ const ProjectCreationPage = () => {
   };
 
   const handleSubmit = async () => {
-    if (validateFields()) {
-      dispatch(setProjectData(formData));
-      console.log(projectState);
-      await createProject();
-      dispatch(resetProject());
-      setImagePreview("");
-      alert("프로젝트가 성공적으로 제출되었습니다.");
-    } else {
-      alert("모든 필수 입력 항목을 작성해주세요.");
+    try {
+      if (validateFields()) {
+        dispatch(setProjectData(formData));
+        await createProject();
+        dispatch(resetProject());
+        setImagePreview("");
+        alert("프로젝트가 성공적으로 제출되었습니다.");
+      } else {
+        alert("모든 필수 입력 항목을 작성해주세요.");
+      }
+    } catch (error) {
+      processError(error);
     }
   };
 
