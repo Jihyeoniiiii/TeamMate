@@ -2,13 +2,15 @@ import styled from "styled-components";
 import { useState } from "react";
 import HeartIcon from "./HeartIcon";
 import HeartFill from "../assets/icon/HeartFill.svg";
+import { updateFavorite } from "../api/project";
 
-const LikeButton = () => {
+const LikeButton = ({projectId}) => {
   const [isFilled, setIsFilled] = useState(false);
 
   const handleHeartClick = (e) => {
     e.stopPropagation();
     setIsFilled(!isFilled);
+    updateFavorite(projectId);
   };
 
   return (
