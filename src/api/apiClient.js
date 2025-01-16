@@ -3,10 +3,22 @@ import axios from "axios";
 
 const apiClient = axios.create({
   baseURL: "/",
-  headers: { "Content-Type": "application/json" },
+  withCredentials: true,
 });
 
 // apiClient 인터셉터는 백엔드 연동 후 사용
+
+// 요청 인터셉터: Access Token 자동 추가
+// apiClient.interceptors.request.use(
+//   (config) => {
+//     const accessToken = sessionStorage.getItem("access_token");
+//     if (accessToken) {
+//       config.headers.Authorization = `Bearer ${accessToken}`; // 액세스 토큰 추가
+//     }
+//     return config;
+//   },
+//   (error) => Promise.reject(error)
+// );
 
 // apiClient.interceptors.response.use(
 //   (response) => response,

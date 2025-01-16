@@ -1,9 +1,8 @@
-import axios from "axios";
 import apiClient from "./apiClient";
 
 export const verifyStudent = async ({email, school}) => {
   try {
-      const response = await axios.post("/auth/student/verify", {
+      const response = await apiClient.post("/auth/student/verify", {
           email,
           univ_name: school
       });
@@ -16,7 +15,7 @@ export const verifyStudent = async ({email, school}) => {
 
 export const confirmCode = async ({email, school, code}) => {
   try {
-      const response = await axios.post("/auth/student/confirm", {
+      const response = await apiClient.post("/auth/student/confirm", {
           email,
           univ_name: school,
           code
@@ -30,7 +29,7 @@ export const confirmCode = async ({email, school, code}) => {
 
 export const submitSignup = async ({email, password, nickname}) => {
   try {
-      const response = await axios.post("/signup", {
+      const response = await apiClient.post("/signup", {
           email,
           password,
           nickname
@@ -44,7 +43,7 @@ export const submitSignup = async ({email, password, nickname}) => {
 
 export const submitLogin = async ({email, password}) => {
   try {
-      const response = await axios.post("/login", {
+      const response = await apiClient.post("/login", {
           email,
           password
       });
@@ -55,19 +54,14 @@ export const submitLogin = async ({email, password}) => {
   }
 };
 
-
-export const refreshAcessToken = async () => {
-  const refreshToken = localStorage.getItem("refresh_token");
-
-  if (!refreshToken) {
-    throw new Error("Refresh token is missing");
-  }
-  
+export const refreshAccessToken = async () => {
   try {
-    const response = await apiClient.post("/refresh", { refresh_token: refreshToken });
+    const response = await apiClient.post("/refresh");
     const newAccessToken = response.data.result.access_token;
     sessionStorage.setItem("access_token", newAccessToken);
+    return newAccessToken;
   } catch (error) {
-      console.log(error);
+    console.error("Error refreshing access token:", error);
+    throw error;
   }
-}
+};

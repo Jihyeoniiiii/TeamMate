@@ -9,7 +9,7 @@ export const handleApiError = (status, code) => {
     201: {
       COMMON201: {
         codeName: "_CREATED",
-        message: "회원가입에 성공하였습니다.",
+        message: "요청에 성공하였습니다.",
       },
     },
     400: {
@@ -42,6 +42,24 @@ export const handleApiError = (status, code) => {
       USER4005: {
         codeName: "LOGIN_FAILURE",
         message: "로그인에 실패하였습니다. 아이디나 비밀번호가 일치하지 않습니다.",
+      },
+    },
+    404: {
+      USER4001: {
+        codeName: "USER_NOT_FOUND",
+        message: "사용자 정보를 찾을 수 없습니다.",
+      },
+      PLAT4001: {
+        codeName: "PLATFORM_NOT_FOUND",
+        message: "플랫폼 정보를 찾을 수 없습니다.",
+      },
+      POS4001: {
+        codeName: "POSITION_NOT_FOUND",
+        message: "포지션 정보를 찾을 수 없습니다.",
+      },
+      PRO4001: {
+        codeName: "PROJECT_NOT_FOUND",
+        message: "프로젝트 정보를 찾을 수 없습니다.",
       },
     },
     409: {

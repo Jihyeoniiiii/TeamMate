@@ -5,12 +5,13 @@ import SmallSpeechBubble from "../assets/icon/SmallSpeechBubble.svg"
 import LikeButton from "./LikeButton"
 
 const PostCard = ({ data, type, onClick }) => {
+
   return (
     <CardWrapper onClick={onClick}>
         <ImageWrapper>
             <img src={DefaultImage} alt="Default" width={330} height={165} />
             <StateLabel>{data.state}</StateLabel>   
-            <LikeButton />
+            <LikeButton projectId={data.id} />
         </ImageWrapper>
         <TitleSection>
             <Title>{data.title}</Title>

@@ -34,8 +34,6 @@ const Login = () => {
       const accessToken = data.result.access_token;
       sessionStorage.setItem("access_token", accessToken);
 
-      const refreshToken = data.result.refresh_token;
-      localStorage.setItem("refresh_token", refreshToken);
     } catch (error) {
       processError(error);
     }
