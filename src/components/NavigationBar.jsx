@@ -12,7 +12,7 @@ const NavigationBar = ({ openModal }) => {
         <MiddleSection>
             <button onClick={() => nav('/project')}>프로젝트</button>
             <button onClick={() => nav('/community')}>커뮤니티</button>
-            <button>마이페이지</button>
+            <button onClick={() => nav('/mypage')}>마이페이지</button>
         </MiddleSection>
         <RightSection>
             <Button text="로그인" onClick={openModal}></Button>
