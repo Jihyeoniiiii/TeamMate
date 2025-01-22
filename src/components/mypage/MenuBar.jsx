@@ -13,11 +13,11 @@ const MenuBar = () => {
 
 const MenuContainer = styled.div`
   display: flex;
-  margin: 50px;
+  margin-top: 60px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
 `;
 
 const MenuItem = styled.button`
