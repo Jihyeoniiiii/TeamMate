@@ -10,7 +10,7 @@ const Profile = () => {
         <Title>마이페이지</Title>
         <ContentContainer>
           <ImageSection>
-            <img src={User} width={50} height={50} />
+            <img src={User} width={60} height={60} />
             <div>
               iboyeon0816 <img src={Edit} width={15} height={15} />
             </div>
