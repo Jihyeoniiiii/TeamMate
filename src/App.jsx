@@ -8,6 +8,7 @@ import CommunityList from "./pages/CommunityList";
 import ScrollToTop from "./components/ScrollToTop";
 import CommunityCreationPage from "./pages/CommunityCreationPage";
 import CommunityDetailPage from "./pages/CommunityDetailPage";
+import MyPage from "./pages/MyPage";
 
 function App() { 
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/community" element={<CommunityList />} />
           <Route path="/community-creation" element={<CommunityCreationPage />} />
           <Route path="/community-detail" element={<CommunityDetailPage />} />
+          <Route path="/mypage" element={<MyPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
