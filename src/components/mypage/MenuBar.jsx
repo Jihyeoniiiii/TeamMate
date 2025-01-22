@@ -1,12 +1,20 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 const MenuBar = () => {
+  const [selectedIndex, setselectedMenu] = useState(0);
+
   return (
     <MenuContainer>
-      <MenuItem>• 내 질문글</MenuItem>
-      <MenuItem>• 내 모집글</MenuItem>
-      <MenuItem>• 내 관심글</MenuItem>
-      <MenuItem>• 신청 대기</MenuItem>
+      {["• 내 질문글", "• 내 모집글", "• 내 관심글", "• 신청 대기"].map((menu, index) => (
+        <MenuItem
+        key={index}
+        onClick={() => setselectedMenu(index)}
+        isSelected={selectedIndex === index}
+      >
+        {menu}
+      </MenuItem>
+    ))}
     </MenuContainer>
   );
 };
@@ -22,15 +30,18 @@ const MenuContainer = styled.div`
 
 const MenuItem = styled.button`
   font-size: 18px;
-  color: ${(props) => props.theme.colors.darkgrey};
+  color: ${(props) =>
+    props.isSelected ? props.theme.colors.black : props.theme.colors.darkgrey};
+  font-weight: ${(props) => (props.isSelected ? "600" : "400")};
   background-color: white;
   border: none;
   cursor: pointer;
+  outline: none;
 
-  &:focus{
-    color: black;
-    font-weight: 600;
+  &:hover {
+    color: ${(props) => props.theme.colors.black};
   }
 `;
+
 
 export default MenuBar;
