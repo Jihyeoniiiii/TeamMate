@@ -9,6 +9,8 @@ import ScrollToTop from "./components/ScrollToTop";
 import CommunityCreationPage from "./pages/CommunityCreationPage";
 import CommunityDetailPage from "./pages/CommunityDetailPage";
 import MyPage from "./pages/MyPage";
+import ResumeCreationPage from "./pages/ResumeCreationPage";
+import PortfolioCreationPage from "./pages/PortfolioCreationPage";
 
 function App() { 
   return (
@@ -24,6 +26,9 @@ function App() {
           <Route path="/community-creation" element={<CommunityCreationPage />} />
           <Route path="/community-detail" element={<CommunityDetailPage />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mypage/resumes" element={<MyPage />} />
+          <Route path="/mypage/resumes/new" element={<ResumeCreationPage />} />
+          <Route path="/mypage/resumes/new/1/portfolio-creation" element={<PortfolioCreationPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
