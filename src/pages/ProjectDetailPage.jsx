@@ -5,7 +5,8 @@ import InfoSideBox from "../components/InfoSideBox"
 import TagList from "../components/TagList"
 import LikeButton from "../components/LikeButton"
 import Button from "../components/Button";
-
+import ProjectRecruitDetail from "../components/recruit-detail/ProjectRecruitDetail";
+import { useState } from "react";
 
 const mockProjectData = {
   id: 1,
@@ -46,6 +47,8 @@ const ProjectDetailPage = () => {
     technology_name_list,
   } = mockProjectData;
 
+  const [isRecruitDetail, setIsRecruitDetail] = useState(false);
+
   return (
     <>
       <Container>
@@ -53,11 +56,12 @@ const ProjectDetailPage = () => {
           <ProjectImage src={image} alt="Project Banner" />
           <LikeButton />
         </ImageSection>
-
         <ContentWrapper>
           <MainContent>
             <HeaderSection status="모집중" title={title} date={createdAt} />
-            <Description>{description}</Description>
+            { isRecruitDetail ? <ProjectRecruitDetail /> :
+              <Description>{description}</Description>
+            }
           </MainContent>
 
           <SideContent>
@@ -81,7 +85,7 @@ const ProjectDetailPage = () => {
               </Section>
               <Divider />
               <Section>
-                <h3>모집 현황</h3>
+                <h3 onClick={() => setIsRecruitDetail(true)}>모집 현황</h3>
                 {platform_dto_list.map((item, index) => (
                   <RecruitItem key={index}>
                     <span>
@@ -173,6 +177,7 @@ const Section = styled.div`
   h3 {
     margin-bottom: 10px;
     font-size: 16px;
+    cursor: pointer;
   }
 
   p {
