@@ -44,13 +44,15 @@ const ProjectRecruitDetail = () => {
         {ApplicantsData.map((item, index) => (
           <ApplicantItem key={index}>
             <ProfileSection>
-                <UserProfile
+              <UserProfile
                 userImg={item.userImage}
                 description={item.userName}
                 textColor="#333"
-                fontSize="18px"
+                fontSize="17px"
                 fontWeight="350"
-                />
+                imgWidth="35"
+                imgHeight="35"
+              />
             </ProfileSection>
             <RoleText>{item.role} 지원</RoleText>
             <ButtonSection>
@@ -65,10 +67,10 @@ const ProjectRecruitDetail = () => {
 };
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 20px;
 `;
 
 const MenuSection = styled.div`
@@ -109,16 +111,19 @@ const ApplicantItem = styled.div`
 `;
 
 const ProfileSection = styled.div`
-    width: 250px;
-`
+  display: flex;
+  align-items: center;
+  width: 250px;
+`;
 
 const RoleText = styled.span`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    font-weight: 600;
-    color: ${(props) => props.theme.colors.primary};
-`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 17px;
+  font-weight: 600;
+  color: ${(props) => props.theme.colors.primary};
+`;
 
 const ButtonSection = styled.div`
   display: flex;
