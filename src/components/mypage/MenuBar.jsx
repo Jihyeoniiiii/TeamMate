@@ -2,14 +2,14 @@ import { useState } from "react";
 import styled from "styled-components";
 
 const MenuBar = () => {
-  const [selectedIndex, setselectedMenu] = useState(0);
+  const [selectedIndex, setSelectedMenu] = useState(0);
 
   return (
     <MenuContainer>
       {["• 내 질문글", "• 내 모집글", "• 내 관심글", "• 신청 대기"].map((menu, index) => (
         <MenuItem
         key={index}
-        onClick={() => setselectedMenu(index)}
+        onClick={() => setSelectedMenu(index)}
         isSelected={selectedIndex === index}
       >
         {menu}
