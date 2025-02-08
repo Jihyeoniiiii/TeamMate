@@ -6,19 +6,22 @@ import TagList from "../components/TagList"
 import LikeButton from "../components/LikeButton"
 import Button from "../components/Button";
 import ProjectRecruitDetail from "../components/recruit-detail/ProjectRecruitDetail";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { fetchDetailProject } from "../api/project";
+import { processError } from "../utils/errorHandler";
+import { useParams } from "react-router-dom";
 
 const mockProjectData = {
   id: 1,
   title: "대학생을 위한 프로젝트 매칭 서비스",
-  userImage: "src/assets/images/user.png",
+  userImage: "/src/assets/images/user.png",
   userName: "iboyeon0816",
   startDate: "2024-06-01",
   endDate: "2024-12-31",
   createdAt: "2024-05-20",
   description:
     "프로젝트 시작 동기\n\n대학생들은 실무 경험 부족으로 취업에 어려움을 겪고 있습니다. 이를 해결하기 위해, 대학생들이 개발 프로젝트에 참여하고 포트폴리오를 강화할 수 있는 프로젝트 매칭 플랫폼을 개발하고자 합니다.\n\n이 플랫폼은 학생들에게 실전 경험을 제공하고, 기술 역량을 키울 수 있는 기회를 제공합니다.\n\n프로젝트 개요\n목표: 대학생들이 관심 있는 개발 프로젝트에 참여할 수 있는 매칭 플랫폼 개발\n\n기능: 프로젝트 검색, 참여 신청, 팀원 간 협업, 진행 상황 관리, 포트폴리오 관리\n\n모임 진행 방식\n초기 기획 회의: 프로젝트 비전과 역할 분담\n정기 회의: 매주 1회 온라인 회의 (진행 상황 체크)\n협업 툴: Slack, Notion, GitHub 활용 (소통 및 자료 공유)\n스프린트: 2주 단위로 개발 목표 설정",
-  image: "src/assets/images/default-image.jpg",
+  image: "/src/assets/images/default-image.jpg",
   deadline: "2024-06-30",
   platform_dto_list: [
     { role: "백엔드", current: 0, total: 1 },
@@ -48,6 +51,32 @@ const ProjectDetailPage = () => {
   } = mockProjectData;
 
   const [isRecruitDetail, setIsRecruitDetail] = useState(false);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { projectId } = useParams();
+
+  useEffect(() => {
+    if (!projectId) return;
+
+    const getDetailProject = async () => {
+      setLoading(true);
+      try {
+        const response = await fetchDetailProject(projectId);
+        setProjects(response.result);
+      } catch (error) {
+        processError(error);
+        setError("프로젝트 상세 데이터를 불러오는 데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getDetailProject();
+  }, [projectId]);
+
+  if (loading) return <p>로딩 중...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <>

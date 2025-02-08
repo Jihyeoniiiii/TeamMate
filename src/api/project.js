@@ -1,6 +1,44 @@
 import { store } from "../store/index.js";
 import apiClient from "./apiClient.js";
 
+export const fetchMainProject = async () => {
+  try {
+    const response = await apiClient.get(`/projects/main`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetch project:", error);
+    throw error;
+  }
+}
+
+export const fetchProject = async ({
+  page = 1,
+  recruiting,
+  position,
+  tech,
+  title,
+} = {}) => {
+  try {
+    const response = await apiClient.get(`/projects`, {
+      params: { page, recruiting, position, tech, title },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetch project:", error);
+    throw error;
+  }
+}
+
+export const fetchDetailProject = async (projectId) => {
+  try {
+    const response = await apiClient.get(`/projects/${projectId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetch detail project:", error);
+    throw error;
+  }
+}
+
 export const createProject = async () => {
   const projectState = store.getState().project;
 
