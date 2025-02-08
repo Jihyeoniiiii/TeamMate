@@ -3,9 +3,35 @@ import MoreList from "../components/MoreList";
 import Advertisement from "../components/Advertisement";
 import { useNavigate } from "react-router-dom";
 import { ProjectData, CommunityData } from "../data/PostData";
+import { useEffect, useState } from "react";
+import { fetchMainProject } from "../api/project";
+import { processError } from "../utils/errorHandler";
 
 const Home = () => {
   const nav = useNavigate();
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const getProjects = async () => {
+      setLoading(true);
+      try {
+        const response = await fetchMainProject();
+        setProjects(response.result);
+      } catch (error) {
+        processError(error);
+        setError("메인 프로젝트 데이터를 불러오는 데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getProjects();
+  }, []);
+
+  if (loading) return <p>로딩 중...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <Wrapper>
