@@ -37,7 +37,7 @@ const Home = () => {
     <Wrapper>
       <Advertisement />
       <MainContentBox>
-        <MoreList data={ProjectData} type="프로젝트" onClick={() => nav('/project-detail')}/>
+        <MoreList data={ProjectData} type="프로젝트" onClick={() => nav(`/project-detail/${ProjectData.id}`)}/>
         <MoreList data={CommunityData} type="커뮤니티" onClick={() => nav('/community-detail')}/>
       </MainContentBox>
     </Wrapper>
