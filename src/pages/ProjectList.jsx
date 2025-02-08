@@ -40,7 +40,7 @@ const ProjectList = () => {
       <Container>
         <GridWrapper>
           {Array.from({ length: 8 }, (_, index) => (
-            <PostCard key={index} data={ProjectData} type="프로젝트" onClick={() => nav('/project-detail')}/>
+            <PostCard key={index} data={ProjectData} type="프로젝트" onClick={() => nav(`/project-detail/${ProjectData.id}`)}/>
           ))}
         </GridWrapper>
       </Container>

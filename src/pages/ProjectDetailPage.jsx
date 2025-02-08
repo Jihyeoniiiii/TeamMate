@@ -6,7 +6,10 @@ import TagList from "../components/TagList"
 import LikeButton from "../components/LikeButton"
 import Button from "../components/Button";
 import ProjectRecruitDetail from "../components/recruit-detail/ProjectRecruitDetail";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { fetchDetailProject } from "../api/project";
+import { processError } from "../utils/errorHandler";
+import { useParams } from "react-router-dom";
 
 const mockProjectData = {
   id: 1,
@@ -48,6 +51,32 @@ const ProjectDetailPage = () => {
   } = mockProjectData;
 
   const [isRecruitDetail, setIsRecruitDetail] = useState(false);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { projectId } = useParams();
+
+  useEffect(() => {
+    if (!projectId) return;
+
+    const getDetailProject = async () => {
+      setLoading(true);
+      try {
+        const response = await fetchDetailProject(projectId);
+        setProjects(response.result);
+      } catch (error) {
+        processError(error);
+        setError("프로젝트 상세 데이터를 불러오는 데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getDetailProject();
+  }, [projectId]);
+
+  if (loading) return <p>로딩 중...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <>
