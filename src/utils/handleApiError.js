@@ -33,6 +33,18 @@ export const handleApiError = (status, code) => {
         codeName: "DUPLICATED_NICKNAME",
         message: "이미 사용중인 닉네임입니다. 다른 닉네임을 입력해주세요.",
       },
+      USER4007: {
+        codeName: "OWN_PROJECT",
+        message: "자신의 프로젝트에는 지원할 수 없습니다.",
+      },
+      PRO4004 : {
+        codeName: "ALREADY_COMPLETED_PROJECT",
+        message: "이미 모집이 마감된 프로젝트입니다.",
+      },
+      PRO4003 : {
+        codeName: "ALREADY_MATCHING_END_POSITION",
+        message: "이미 모집이 마감된 포지션입니다.",
+      },
     },
     401: {
       JWT4001: {
@@ -42,6 +54,12 @@ export const handleApiError = (status, code) => {
       USER4005: {
         codeName: "LOGIN_FAILURE",
         message: "로그인에 실패하였습니다. 아이디나 비밀번호가 일치하지 않습니다.",
+      },
+    },
+    403: {
+      COMMON403: {
+        codeName: "_FORBIDDEN",
+        message: "접근 권한이 없습니다.",
       },
     },
     404: {
@@ -60,6 +78,14 @@ export const handleApiError = (status, code) => {
       PRO4001: {
         codeName: "PROJECT_NOT_FOUND",
         message: "프로젝트 정보를 찾을 수 없습니다.",
+      },
+      PRO4002: {
+        codeName: "PROJECT_POSITION_NOT_FOUND",
+        message: "프로젝트 포지션 정보를 찾을 수 없습니다.",
+      },
+      RES4001: {
+        codeName: "RESUME_NOT_FOUND",
+        message: "이력서를 찾을 수 없습니다.",
       },
     },
     409: {
