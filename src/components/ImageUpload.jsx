@@ -1,8 +1,10 @@
-// ImageUpload.js
 import { useState } from "react";
 import styled from "styled-components";
+// 이미지 import
+import defaultResumeImage from "../assets/icon/default_3_4_ratio_high_quality.png";
+import defaultGeneralImage from "../assets/icon/defaultImg.png";
 
-const ImageUpload = ({ initialImage, onImageChange }) => {
+const ImageUpload = ({ initialImage, onImageChange, type }) => {
   const [imagePreview, setImagePreview] = useState(initialImage || "");
 
   const handleImageUpload = (e) => {
@@ -17,9 +19,16 @@ const ImageUpload = ({ initialImage, onImageChange }) => {
     }
   };
 
+  // 기본 이미지 설정
+  const defaultImage = type === "resume" ? defaultResumeImage : defaultGeneralImage;
+
   return (
     <ImageWrapper>
-      <ImagePreview src={imagePreview || "src/assets/icon/defaultImg.png"} alt="미리보기" />
+      <ImagePreview
+        src={imagePreview || defaultImage} // 이미지 미리보기 또는 기본 이미지
+        alt="미리보기"
+        type={type}
+      />
       <UploadButton>
         <button>
           <label htmlFor="image-upload">이미지 업로드</label>
@@ -41,11 +50,11 @@ const ImageWrapper = styled.div`
 `;
 
 const ImagePreview = styled.img`
-  width: 300px;
-  height: 190px;
+  width: ${(props) => (props.type === "resume" ? "150px" : "300px")}; /* 기본은 300px, 이력서는 150px */
+  height: ${(props) => (props.type === "resume" ? "200px" : "190px")}; /* 기본은 190px, 이력서는 200px */
   margin: 8px 0;
-  border-radius: 10px;
-  object-fit: cover;
+  border-radius: ${(props) => (props.type === "resume" ? "5px" : "10px")}; /* 이력서는 둥글기 감소 */
+  object-fit: cover; /* 비율 유지하며 이미지 채움 */
   background-color: lightgray;
 `;
 
