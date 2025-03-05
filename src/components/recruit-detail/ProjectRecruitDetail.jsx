@@ -2,23 +2,25 @@ import { useState } from "react";
 import styled from "styled-components";
 import UserProfile from "../UserProfile";
 import Button from "../Button";
+import { updateApplicationState } from "../../api/project";
+import { processError } from "../../utils/errorHandler";
 
 const ApplicantsData = [
   {
     id: 1,
-    userImage: "src/assets/images/user.png",
+    userImage: "/src/assets/images/user.png",
     userName: "iboyeon0816",
     role: "백엔드",
   },
   {
     id: 2,
-    userImage: "src/assets/images/user.png",
+    userImage: "/src/assets/images/user.png",
     userName: "jihyeoni",
     role: "프론트엔드",
   },
   {
     id: 3,
-    userImage: "src/assets/images/user.png",
+    userImage: "/src/assets/images/user.png",
     userName: "cheny",
     role: "프론트엔드",
   },
@@ -26,6 +28,15 @@ const ApplicantsData = [
 
 const ProjectRecruitDetail = () => {
   const [selectedIndex, setSelectedMenu] = useState(0);
+
+  const handleApplyState = async (projectApplicationId) => {
+    try {
+      await updateApplicationState(projectApplicationId);
+      alert(`지원자 상태 변경 요청이 완료되었습니다!`);
+    } catch (error) {
+      processError(error);
+    }
+  }
 
   return (
     <Container>
@@ -56,7 +67,7 @@ const ProjectRecruitDetail = () => {
             </ProfileSection>
             <RoleText>{item.role} 지원</RoleText>
             <ButtonSection>
-              <Button text="추가" />
+              <Button text="추가" onClick={() => handleApplyState(item.id)}/>
               <Button text="삭제" variant="invert" />
             </ButtonSection>
           </ApplicantItem>

@@ -60,3 +60,23 @@ export const updateFavorite = async (projectId) => {
     throw error;
   }
 };
+
+export const applyToPosition = async (projectPositionId) => {
+  try {
+    const response = await apiClient.post(`/applications/${projectPositionId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error apply to position:", error);
+    throw error;
+  }
+}
+
+export const updateApplicationState = async (projectApplicationId) => {
+  try {
+    const response = await apiClient.patch(`/applications/${projectApplicationId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error application state update:", error);
+    throw error;
+  }
+}

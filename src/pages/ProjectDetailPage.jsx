@@ -7,7 +7,7 @@ import LikeButton from "../components/LikeButton"
 import Button from "../components/Button";
 import ProjectRecruitDetail from "../components/recruit-detail/ProjectRecruitDetail";
 import { useEffect, useState } from "react";
-import { fetchDetailProject } from "../api/project";
+import { applyToPosition, fetchDetailProject } from "../api/project";
 import { processError } from "../utils/errorHandler";
 import { useParams } from "react-router-dom";
 
@@ -24,9 +24,9 @@ const mockProjectData = {
   image: "/src/assets/images/default-image.jpg",
   deadline: "2024-06-30",
   platform_dto_list: [
-    { role: "백엔드", current: 0, total: 1 },
-    { role: "프론트엔드", current: 1, total: 1 },
-    { role: "디자인", current: 0, total: 1 },
+    { id: 101, role: "백엔드", current: 0, total: 1 },
+    { id: 102, role: "프론트엔드", current: 1, total: 1 },
+    { id: 103, role: "디자인", current: 0, total: 1 },
   ],
   platform_id_list: [
     "반응형 웹(PC/모바일)",
@@ -75,6 +75,15 @@ const ProjectDetailPage = () => {
     getDetailProject();
   }, [projectId]);
 
+  const handleApply = async (projectPositionId) => {
+    try {
+      await applyToPosition(projectPositionId);
+      alert(`지원 요청이 완료되었습니다!`);
+    } catch (error) {
+      processError(error);
+    }
+  }
+
   if (loading) return <p>로딩 중...</p>;
   if (error) return <p>{error}</p>;
 
@@ -115,14 +124,14 @@ const ProjectDetailPage = () => {
               <Divider />
               <Section>
                 <h3 onClick={() => setIsRecruitDetail(true)}>모집 현황</h3>
-                {platform_dto_list.map((item, index) => (
-                  <RecruitItem key={index}>
+                {platform_dto_list.map((item) => (
+                  <RecruitItem key={item.id}>
                     <span>
                       {item.role} {item.current}/{item.total}
                     </span>
                     {item.current < item.total ? (
                       <ButtonWrapper>
-                        <Button text="지원" size="small" />
+                        <Button text="지원" size="small" onClick={() => handleApply(item.id)}/>
                       </ButtonWrapper>
                     ) : (
                       <ButtonWrapper>
@@ -233,20 +242,6 @@ const ButtonWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 50px;
-`;
-
-const MiniButton = styled.button`
-  padding: 3px 10px;
-  border-radius: 5px;
-  background-color: ${({ $bgColor, theme }) => $bgColor || theme.colors.accent};
-  border: 1px solid ${({ $borderColor, theme }) => $borderColor || theme.colors.accent};
-  color: white;
-  cursor: pointer;
-  min-width: 50px;
-  height: 25px;
-  text-align: center;
-  display: inline-block;
-  line-height: 20px;
 `;
 
 export default ProjectDetailPage;
