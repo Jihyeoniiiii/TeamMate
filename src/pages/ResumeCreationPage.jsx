@@ -29,7 +29,7 @@ const ResumeCreationPage = () => {
     };
 
     const handleCreatePortfolio = () => {
-        navigate("/mypage/resumes/new/1/portfolio-creation");
+        navigate("/mypage/resumes/1/portfolio-creation");
     };
 
     const handleImageChange = (newImage) => {
@@ -38,13 +38,12 @@ const ResumeCreationPage = () => {
 
     const validateFields = () => {
         const newErrors = {};
-        if (!communityState.name) newErrors.name = "이름을 입력해주세요.";
-        if (!communityState.age) newErrors.age = "나이를 입력해주세요.";
-        if (!communityState.position) newErrors.position = "포지션을 입력해주세요.";
-        if (!communityState.email) newErrors.email = "email을 입력해주세요.";
-        if (!communityState.introduction) newErrors.introduction = "자기소개를 입력해주세요.";
-        if (!communityState.stacks) newErrors.stacks = "스택을 입력해주세요.";
-        if (tags.length === 0) newErrors.tags = "태그를 작성해주세요."; // tags.length로 확인
+        if (!resumeState.name) newErrors.name = "이름을 입력해주세요.";
+        if (!resumeState.age) newErrors.age = "나이를 입력해주세요.";
+        if (!resumeState.position) newErrors.position = "포지션을 입력해주세요.";
+        if (!resumeState.email) newErrors.email = "email을 입력해주세요.";
+        if (!resumeState.introduction) newErrors.introduction = "자기소개를 입력해주세요.";
+        //if (tags.length === 0) newErrors.tags = "태그를 작성해주세요."; // tags.length로 확인
         setErrors(newErrors);
 
         // 에러가 없으면 true 반환
@@ -137,10 +136,9 @@ const ResumeCreationPage = () => {
                     Stack
                     <TextArea
                         value={resumeState.stacks}
-                        onChange={(e) => handleInputChange("stack", e.target.value)}
-                        placeholder="stack"
+                        onChange={(e) => handleInputChange("stacks", e.target.value)}
+                        placeholder="stacks"
                     />
-                    {errors.stacks && <ErrorText>{errors.stacks}</ErrorText>}
                 </Label>
 
                 <Label>
