@@ -70,3 +70,13 @@ export const applyToPosition = async (projectPositionId) => {
     throw error;
   }
 }
+
+export const updateApplicationState = async (projectApplicationId) => {
+  try {
+    const response = await apiClient.patch(`/applications/${projectApplicationId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error application state update:", error);
+    throw error;
+  }
+}

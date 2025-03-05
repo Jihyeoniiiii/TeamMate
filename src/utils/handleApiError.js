@@ -45,6 +45,10 @@ export const handleApiError = (status, code) => {
         codeName: "ALREADY_MATCHING_END_POSITION",
         message: "이미 모집이 마감된 포지션입니다.",
       },
+      PRO4006 : {
+        codeName: "APPLICATION_STATE_FINALIZE",
+        message: "이미 지원자 상태 변경을 완료했습니다.",
+      },
     },
     401: {
       JWT4001: {
@@ -82,6 +86,10 @@ export const handleApiError = (status, code) => {
       PRO4002: {
         codeName: "PROJECT_POSITION_NOT_FOUND",
         message: "프로젝트 포지션 정보를 찾을 수 없습니다.",
+      },
+      PRO4005: {
+        codeName: "APPLICATION_NOT_FOUND",
+        message: "프로젝트 지원 정보를 찾을 수 없습니다.",
       },
       RES4001: {
         codeName: "RESUME_NOT_FOUND",

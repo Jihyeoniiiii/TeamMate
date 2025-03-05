@@ -78,7 +78,7 @@ const ProjectDetailPage = () => {
   const handleApply = async (projectPositionId) => {
     try {
       await applyToPosition(projectPositionId);
-      alert(`포지션 ID ${projectPositionId}에 지원 요청이 완료되었습니다!`);
+      alert(`지원 요청이 완료되었습니다!`);
     } catch (error) {
       processError(error);
     }
